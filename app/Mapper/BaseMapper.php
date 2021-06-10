@@ -15,7 +15,9 @@ class BaseMapper
         if (!$data instanceof Countable) {
             unset(
                 $data['id'],
-                $data['visibility'],
+                // $data['visibility'],
+                // $data['slug'],
+                // $data['updated_at'],
             );
             return $data;
         }
@@ -23,7 +25,9 @@ class BaseMapper
         foreach ($data as $entity) {
             unset(
                 $entity['id'],
-                $entity['visibility'],
+                // $entity['visibility'],
+                // $entity['slug'],
+                // $entity['updated_at'],
             );
         }
 

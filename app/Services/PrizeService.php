@@ -6,6 +6,8 @@ use App\Contracts\Repository\ISysPrize;
 use App\Contracts\Repository\IUser;
 use App\Contracts\Services\IPrizeService;
 use App\DTOs\CreatePrizeDTO;
+use App\Utils\BaseMapper;
+use App\Utils\UserMapper;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +46,23 @@ class PrizeService extends BaseService implements IPrizeService
     }
 
 
+    public function find($id)
+    {
+        $result = $this->prizeRepo->find($id);
+        if ($result) {
+            $response_message = $this->customHttpResponse(200, 'Success.', $result);
+            return $response_message;
+        }
+        $response_message = $this->customHttpResponse(400, 'Record does not exist.', $result);
+        return $response_message;
+    }
+
+    public function findAll()
+    {
+        $result = $this->prizeRepo->findAll();
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
 
 
     public function process()

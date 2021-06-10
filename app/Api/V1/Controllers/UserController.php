@@ -7,6 +7,7 @@ use App\Contracts\FormRequest\IUpdateUserRequest;
 use App\Contracts\FormRequest\IUserLoginRequest;
 use App\Contracts\FormRequest\IUserRegisterRequest;
 use App\Contracts\Repository\IUser;
+use App\Contracts\Repository\IUserActivityLog;
 use App\Contracts\Services\ILoginService;
 use App\Contracts\Services\IRegisterService;
 use App\Contracts\Services\IUserService;
@@ -18,29 +19,26 @@ class UserController extends BaseController
 {
 
     private $userRepo;
+    private $userService;
 
-    public function __construct(IUser $userRepo)
+    public function __construct(IUser $userRepo, IUserService $userService)
     {
         $this->userRepo = $userRepo;
-    }
-
-
-    public function findAll()
-    {
-        $result = $this->userRepo->findAll();
-        $prunedResult = UserMapper::prune($result);
-        $response_message = $this->customHttpResponse(200, 'Success.', $prunedResult);
-        return response()->json($response_message);
+        $this->userService = $userService;
     }
 
 
     public function find($id)
     {
-        $result = $this->userRepo->find($id);
-        $prunedResult = UserMapper::prune($result);
-        $response_message = $this->customHttpResponse(200, 'Success.', $prunedResult);
-        return response()->json($response_message);
+        return $this->userService->find($id);
     }
+
+
+    public function findAll()
+    {
+        return $this->userService->findAll();
+    }
+
 
     public function logout(Request $request)
     {
@@ -67,7 +65,7 @@ class UserController extends BaseController
     }
 
 
-    public function register(Request $request, IUserRegisterRequest $registerRequest, IUserService $registerService)
+    public function register(Request $request, IUserRegisterRequest $registerRequest)
     {
 
         $validation = $registerRequest->validate($request);
@@ -77,11 +75,11 @@ class UserController extends BaseController
             return $response_message;
         }
 
-        return $registerService->create();
+        return $this->userService->create();
     }
 
 
-    public function update($id, Request $request, IUpdateUserRequest $updateRequest, IUserService $userService)
+    public function update($id, Request $request, IUpdateUserRequest $updateRequest)
     {
 
         $validation = $updateRequest->validate($request);
@@ -91,6 +89,6 @@ class UserController extends BaseController
             return $response_message;
         }
 
-        return $userService->update($id);
+        return $this->userService->update($id);
     }
 }

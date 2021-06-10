@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Contracts\FormRequest\ICreatePackageRequest;
 use App\Contracts\FormRequest\ICreatePrizeRequest;
+use App\Contracts\FormRequest\IUpdatePackageRequest;
 use App\Contracts\FormRequest\IUpdateUserRequest;
 use App\Contracts\FormRequest\IUserLoginRequest;
 use App\Contracts\FormRequest\IUserRegisterRequest;
+use App\Http\Request\CreatePackageRequest;
 use App\Http\Request\CreatePrizeRequest;
+use App\Http\Request\UpdatePackageRequest;
 use App\Http\Request\UpdateUserRequest;
 use App\Http\Request\UserLoginRequest;
 use App\Http\Request\UserRegisterRequest;
@@ -27,5 +31,7 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IUserRegisterRequest::class, UserRegisterRequest::class);
         $this->app->bind(IUpdateUserRequest::class, UpdateUserRequest::class);
         $this->app->bind(ICreatePrizeRequest::class, CreatePrizeRequest::class);
+        $this->app->bind(ICreatePackageRequest::class, CreatePackageRequest::class);
+        $this->app->bind(IUpdatePackageRequest::class, UpdatePackageRequest::class);
     }
 }
