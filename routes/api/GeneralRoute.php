@@ -74,6 +74,15 @@ $api->version(
                 'as' => 'prize.find',
                 'uses' => 'PrizeController@find',
             ]);
+
+            /**
+             * Buy Ticket Route
+             */
+
+            $api->post('buy_ticket', [
+                'as' => 'buy_ticket.create',
+                'uses' => 'BuyTicketController@create',
+            ]);
         });
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\FormRequest\IBuyTicketRequest;
 use App\Contracts\FormRequest\ICreatePackageOptionsRequest;
 use App\Contracts\FormRequest\ICreatePackageRequest;
 use App\Contracts\FormRequest\ICreatePrizeRequest;
@@ -10,6 +11,7 @@ use App\Contracts\FormRequest\IUpdatePackageRequest;
 use App\Contracts\FormRequest\IUpdateUserRequest;
 use App\Contracts\FormRequest\IUserLoginRequest;
 use App\Contracts\FormRequest\IUserRegisterRequest;
+use App\Http\Request\BuyTicketRequest;
 use App\Http\Request\CreatePackageOptionsRequest;
 use App\Http\Request\CreatePackageRequest;
 use App\Http\Request\CreatePrizeRequest;
@@ -39,5 +41,6 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IUpdatePackageRequest::class, UpdatePackageRequest::class);
         $this->app->bind(ICreatePackageOptionsRequest::class, CreatePackageOptionsRequest::class);
         $this->app->bind(IUpdatePackageOptionsRequest::class, UpdatePackageOptionsRequest::class);
+        $this->app->bind(IBuyTicketRequest::class, BuyTicketRequest::class);
     }
 }

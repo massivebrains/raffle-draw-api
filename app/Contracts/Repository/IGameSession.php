@@ -2,11 +2,19 @@
 
 namespace App\Contracts\Repository;
 
+use App\DTOs\CreateGameSessionDTO;
+
 interface IGameSession
 {
-    public function filterByAdsId(string $id);
 
-    public function findAllDetailed();
+    /**
+     * Creates a user.
+     * @param CreateGameSessionDTO $attributes Object of the details to be persisted.
+     * @return mixed Last record inserted.
+     * @throws RepositoryException
+     */
+    public function create(CreateGameSessionDTO $attributes);
 
-    public function findOneDetailed(string $id);
+
+    public function getActiveSession(string $packageID);
 }

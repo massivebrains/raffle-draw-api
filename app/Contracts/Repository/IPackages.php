@@ -24,4 +24,6 @@ interface IPackages extends IRepository
      * @throws RepositoryException
      */
     public function update(string $id, UpdatePackageDTO $attributes);
+
+    public function findByInternalID(string $id);
 }
