@@ -107,6 +107,37 @@ $api->version(
                 'as' => 'package.find',
                 'uses' => 'PackageController@find',
             ]);
+
+
+            /**
+             * Package Options Route
+             */
+
+
+            $api->post('package_options', [
+                'as' => 'package_option.create',
+                'uses' => 'PackageOptionsController@create',
+            ]);
+
+            $api->put('package_options/{id}', [
+                'as' => 'package.update',
+                'uses' => 'PackageOptionsController@update',
+            ]);
+
+            $api->get('package_options', [
+                'as' => 'package_options.findAll',
+                'uses' => 'PackageOptionsController@findAll',
+            ]);
+
+            $api->get('package_options/{id}', [
+                'as' => 'package_options.find',
+                'uses' => 'PackageOptionsController@find',
+            ]);
+
+            $api->delete('package_options/{id}', [
+                'as' => 'package_options.delete',
+                'uses' => 'PackageOptionsController@delete',
+            ]);
         });
 
 

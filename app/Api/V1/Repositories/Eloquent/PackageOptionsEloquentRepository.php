@@ -5,16 +5,18 @@ namespace App\Api\V1\Repositories\Eloquent;
 use App\Api\V1\Models\PackageOptions;
 use App\Api\V1\Repositories\EloquentRepository;
 use App\Contracts\Repository\IPackageOptions;
+use App\DTOs\CreatePackageOptionsDTO;
+use App\DTOs\UpdatePackageOptionsDTO;
 
 class PackageOptionsEloquentRepository extends  EloquentRepository implements IPackageOptions
 {
 
-    private $adsPayment;
+    private $packageOptionsModel;
 
-    public function __construct(PackageOptions $adsPayment)
+    public function __construct(PackageOptions $packageOptionsModel)
     {
         parent::__construct();
-        $this->adsPayment = $adsPayment;
+        $this->packageOptionsModel = $packageOptionsModel;
     }
 
     public function model()
@@ -22,88 +24,31 @@ class PackageOptionsEloquentRepository extends  EloquentRepository implements IP
         return PackageOptions::class;
     }
 
-    public function findAllDetailed()
+    public function create(CreatePackageOptionsDTO $details)
     {
-        $res = $this->adsPayment->from('ads_payment_method as a')
-            ->select(
-                'a.uuid',
-                'ads.uuid as ads_id',
-                'pm.uuid as pm_id',
-                'pm.name as pm_name',
-                'pm.slug as pm_slug',
-                'pm.descr as pm_descr',
-                'a.is_active',
-            )
-            ->leftJoin('payment_methods as pm', 'a.payment_method_id', 'pm.id')
-            ->leftJoin('ads as ads', 'a.ads_id', 'ads.id')
-            ->whereNull('a.deleted_at')
-            ->get();
+        //convert POPO to array for the create() quick wrapper below
+        $details =  json_decode(json_encode($details), true);
+        $res = $this->packageOptionsModel->create($details);
 
         return $res;
     }
 
-    public function findOneDetailed($id)
+    public function update($id, UpdatePackageOptionsDTO $details)
     {
-        $res = $this->adsPayment->from('ads_payment_method as a')
-            ->select(
-                'a.uuid',
-                'ads.uuid as ads_id',
-                'pm.uuid as pm_id',
-                'pm.name as pm_name',
-                'pm.slug as pm_slug',
-                'pm.descr as pm_descr',
-                'a.is_active',
-            )
-            ->leftJoin('payment_methods as pm', 'a.payment_method_id', 'pm.id')
-            ->leftJoin('ads as ads', 'a.ads_id', 'ads.id')
-            ->whereNull('a.deleted_at')
-            ->where("a.uuid", '=', $id)
-            ->get();
+        //convert POPO to array for the create() quick wrapper below
+        $details =  json_decode(json_encode($details), true);
+
+        //go through all and unset all NULL values
+        unset($details['uuid']);
+        foreach ($details as $key => $value) {
+            if (is_null($value)) {
+                unset($details[$key]);
+            }
+        }
+
+        $res = $this->packageOptionsModel->where('uuid', $id)
+            ->update($details);
 
         return $res;
-    }
-
-    public function filterByAdsId($id)
-    {
-        $res = $this->adsPayment->from('ads_payment_method as a')
-            ->select(
-                'a.uuid',
-                'ads.uuid as ads_id',
-                'pm.uuid as pm_id',
-                'pm.name as pm_name',
-                'pm.slug as pm_slug',
-                'pm.descr as pm_descr',
-                'a.is_active',
-            )
-            ->leftJoin('payment_methods as pm', 'a.payment_method_id', 'pm.id')
-            ->leftJoin('ads', 'a.ads_id', 'ads.id')
-            ->whereNull('a.deleted_at')
-            ->where("ads.uuid", '=', $id)
-            ->get();
-
-        return $res;
-    }
-
-    public function createAdPMBuy($detail)
-    {
-        $newEntity = new PackageOptions();
-        $newEntity->uuid = $detail['uuid'];
-        $newEntity->ads_id = $detail['ads_id'];
-        $newEntity->payment_method_id = $detail['payment_method_id'];
-        $newEntity->save();
-
-        return $newEntity->id;
-    }
-
-    public function createAdPMSell($detail)
-    {
-        $newEntity = new PackageOptions();
-        $newEntity->uuid = $detail['uuid'];
-        $newEntity->ads_id = $detail['ads_id'];
-        $newEntity->payment_method_id = $detail['payment_method_id'];
-        $newEntity->payment_account_detail_id = $detail['payment_account_detail_id'];
-        $newEntity->save();
-
-        return $newEntity->id;
     }
 }

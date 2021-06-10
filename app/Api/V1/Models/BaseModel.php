@@ -9,5 +9,5 @@ class BaseModel extends Model
 {
     use SoftDeletes;
     protected $guarded = ['id'];
-    protected $hidden = ['deleted_at', 'extra', 'slug', 'updated_at', 'visibility', 'prize_id'];
+    protected $hidden = ['id', 'deleted_at', 'extra', 'slug', 'updated_at', 'visibility', 'prize_id'];
 }

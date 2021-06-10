@@ -27,7 +27,7 @@ abstract class BaseRequest
         if ($validator->fails()) {
             $this->valid = true;
         }
-        return $this;
+        return $validator;
     }
 
     /**
