@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Contracts\Services\ILoginService;
+use App\Contracts\Services\IPackageOptionsService;
 use App\Contracts\Services\IPackageService;
 use App\Contracts\Services\IPrizeService;
 use App\Contracts\Services\IUserService;
 use App\Services\LoginService;
+use App\Services\PackageOptionsService;
 use App\Services\PackageService;
 use App\Services\PrizeService;
 use App\Services\UserService;
@@ -27,5 +29,6 @@ class ServicesServiceProvider extends ServiceProvider
         $this->app->bind(IUserService::class, UserService::class);
         $this->app->bind(IPrizeService::class, PrizeService::class);
         $this->app->bind(IPackageService::class, PackageService::class);
+        $this->app->bind(IPackageOptionsService::class, PackageOptionsService::class);
     }
 }
