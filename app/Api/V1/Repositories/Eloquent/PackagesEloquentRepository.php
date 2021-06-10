@@ -52,4 +52,9 @@ class PackagesEloquentRepository extends  EloquentRepository implements IPackage
 
         return $res;
     }
+
+    public function findByInternalID($id)
+    {
+        return  $this->packageModel->where('id', $id)->first();
+    }
 }

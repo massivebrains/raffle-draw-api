@@ -3,10 +3,15 @@
 namespace App\Contracts\Repository;
 
 use App\Contracts\IRepository;
+use App\DTOs\CreatePaymentDTO;
 
 interface IPayment extends IRepository
 {
-    // public function findAllDetailed();
-
-    // public function findOneDetailed(string $id);
+    /**
+     * Creates a user.
+     * @param CreatePaymentDTO $attributes Object of the details to be persisted.
+     * @return mixed Last record inserted.
+     * @throws RepositoryException
+     */
+    public function create(CreatePaymentDTO $attributes);
 }

@@ -22,4 +22,10 @@ interface IWallet
      * @throws RepositoryException
      */
     public function Update(string $id, array $attributes);
+
+    public function hasSufficientBalance(string $userID, int $amount);
+
+    public function debitWallet(string $id, int $amount);
+
+    public function creditWallet(string $id, int $amount);
 }
