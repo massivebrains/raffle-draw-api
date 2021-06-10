@@ -11,8 +11,9 @@ class CreatePackageRequest extends BaseRequest implements ICreatePackageRequest
     {
         $rules = [
             'name' => 'required',
-            'value' => 'required',
-            'desc' => 'sometimes|required'
+            'prize_id' => 'required',
+            'desc' => 'sometimes|required',
+            'expected_winners' => 'sometimes|required',
         ];
 
         return $rules;

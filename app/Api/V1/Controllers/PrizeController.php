@@ -14,32 +14,28 @@ class PrizeController extends BaseController
 {
 
     private $userRepo;
+    private $prizeService;
 
-    public function __construct(IUser $userRepo)
+    public function __construct(IUser $userRepo, IPrizeService $prizeService)
     {
         $this->userRepo = $userRepo;
+        $this->prizeService = $prizeService;
     }
 
 
-    // public function findAll()
-    // {
-    //     $result = $this->userRepo->findAll();
-    //     $prunedResult = UserMapper::prune($result);
-    //     $response_message = $this->customHttpResponse(200, 'Success.', $prunedResult);
-    //     return response()->json($response_message);
-    // }
+    public function find($id)
+    {
+        return $this->prizeService->find($id);
+    }
 
 
-    // public function find($id)
-    // {
-    //     $result = $this->userRepo->find($id);
-    //     $prunedResult = UserMapper::prune($result);
-    //     $response_message = $this->customHttpResponse(200, 'Success.', $prunedResult);
-    //     return response()->json($response_message);
-    // }
+    public function findAll()
+    {
+        return $this->prizeService->findAll();
+    }
 
 
-    public function create(Request $request, ICreatePrizeRequest $prizeRequest, IPrizeService $prizeService)
+    public function create(Request $request, ICreatePrizeRequest $prizeRequest)
     {
 
         $validation = $prizeRequest->validate($request);
@@ -49,13 +45,13 @@ class PrizeController extends BaseController
             return $response_message;
         }
 
-        return $prizeService->create();
+        return $this->prizeService->create();
     }
 
 
-    public function delete($id, IPrizeService $prizeService)
+    public function delete($id)
     {
 
-        return $prizeService->softDelete($id);
+        return $this->prizeService->softDelete($id);
     }
 }

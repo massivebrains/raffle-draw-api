@@ -51,6 +51,23 @@ class UserService extends BaseService implements IUserService
         return $this->processUpdate($id);
     }
 
+    public function find($id)
+    {
+        $result = $this->userRepo->find($id);
+        if ($result) {
+            $response_message = $this->customHttpResponse(200, 'Success.', $result);
+            return $response_message;
+        }
+        $response_message = $this->customHttpResponse(400, 'Record does not exist.', $result);
+        return $response_message;
+    }
+
+    public function findAll()
+    {
+        $result = $this->userRepo->findAll();
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
 
     public function hasDBData($handle)
     {

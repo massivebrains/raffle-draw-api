@@ -48,23 +48,12 @@ $api->version(
                 'uses' => 'UserController@update',
             ]);
 
+
+
             /**
              * Prize Route
              */
-            $api->get('ads', [
-                'as' => 'ads.findall',
-                'uses' => 'AdsController@findAll',
-            ]);
 
-            $api->get('ads/{id}', [
-                'as' => 'ads.find',
-                'uses' => 'AdsController@findOne',
-            ]);
-
-            $api->get('ads_page_data', [
-                'as' => 'ads.pagedata',
-                'uses' => 'AdsController@pageData',
-            ]);
 
             $api->post('prize', [
                 'as' => 'prize.create',
@@ -76,12 +65,49 @@ $api->version(
                 'uses' => 'PrizeController@delete',
             ]);
 
-            $api->put('ads/visit', [
-                'as' => 'ads.visit',
-                'uses' => 'AdsController@updateVisit',
+            $api->get('prize', [
+                'as' => 'prize.findAll',
+                'uses' => 'PrizeController@findAll',
+            ]);
+
+            $api->get('prize/{id}', [
+                'as' => 'prize.find',
+                'uses' => 'PrizeController@find',
             ]);
         });
 
+
+        /**
+         * Admin Route
+         */
+        $api->group(['middleware' => ['auth:api', 'scopes:user']], function ($api) {
+
+
+            /**
+             * Package Route
+             */
+
+
+            $api->post('package', [
+                'as' => 'package.create',
+                'uses' => 'PackageController@create',
+            ]);
+
+            $api->put('package/{id}', [
+                'as' => 'package.update',
+                'uses' => 'PackageController@update',
+            ]);
+
+            $api->get('package', [
+                'as' => 'package.findAll',
+                'uses' => 'PackageController@findAll',
+            ]);
+
+            $api->get('package/{id}', [
+                'as' => 'package.find',
+                'uses' => 'PackageController@find',
+            ]);
+        });
 
 
         /**
