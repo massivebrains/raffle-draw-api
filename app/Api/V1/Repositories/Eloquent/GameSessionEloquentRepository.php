@@ -2,94 +2,44 @@
 
 namespace App\Api\V1\Repositories\Eloquent;
 
-use App\Api\V1\Models\AdsCounterpartyConditions;
 use App\Api\V1\Models\GameSession;
 use App\Api\V1\Repositories\EloquentRepository;
-use App\Contracts\Repository\IAdsCounterpartyConditionsRepository;
 use App\Contracts\Repository\IGameSession;
+use App\DTOs\CreateGameSessionDTO;
+use Illuminate\Support\Facades\DB;
 
 class GameSessionEloquentRepository extends  EloquentRepository implements IGameSession
 {
 
-    private $adsCPC;
+    private $sessionModel;
 
-    public function __construct(GameSession $adsCPC)
+    public function __construct(GameSession $sessionModel)
     {
         parent::__construct();
-        $this->adsCPC = $adsCPC;
+        $this->sessionModel = $sessionModel;
     }
 
 
     public function model()
     {
-        return AdsCounterpartyConditions::class;
+        return GameSession::class;
     }
 
-    public function findAllDetailed()
+    public function create(CreateGameSessionDTO $details)
     {
-        $res = $this->adsCPC->from('ads_counterparty_conditions as a')
-            ->select(
-                'a.uuid',
-                'ads.uuid',
-                'a.check_completed_kyc',
-                'a.check_holding_btc',
-                'a.check_days_joined',
-                'a.is_active',
-            )
-            ->leftJoin('ads', 'a.ads_id', 'ads.id')
-            ->where('is_active', '=', 1)
-            ->get();
+        //convert POPO to array for the create() quick wrapper below
+        $details =  json_decode(json_encode($details), true);
+        $res = $this->sessionModel->create($details);
 
         return $res;
     }
 
-    public function findOneDetailed($id)
+    public function getActiveSession($packageID)
     {
-        $res = $this->adsCPC->from('ads_counterparty_conditions as a')
-            ->select(
-                'a.uuid',
-                'ads.uuid',
-                'a.check_completed_kyc',
-                'a.check_holding_btc',
-                'a.check_days_joined',
-                'a.is_active',
-            )
-            ->leftJoin('ads', 'a.ads_id', 'ads.id')
-            ->where('a.is_active', '=', 1)
-            ->where('a.uuid', '=', $id)
+        $res = $this->sessionModel->select('id', 'uuid')
+            ->where('package_id', $packageID)
+            ->where(DB::raw('TIMESTAMPDIFF(SECOND,CURRENT_TIMESTAMP,expires_at)'), '>', '0') //has not expired.
             ->first();
-
         return $res;
-    }
-
-    public function filterByAdsId($adsID)
-    {
-        $res = $this->adsCPC->from('ads_counterparty_conditions as a')
-            ->select(
-                'a.uuid',
-                'ads.uuid',
-                'a.check_completed_kyc',
-                'a.check_holding_btc',
-                'a.check_days_joined',
-                'a.is_active',
-            )
-            ->leftJoin('ads', 'a.ads_id', 'ads.id')
-            ->where('a.is_active', '=', 1)
-            ->where('ads.uuid', '=', $adsID)
-            ->get();
-
-        return $res;
-    }
-
-    public function createAdCPCondition($detail)
-    {
-        $newEntity = new GameSession();
-        $newEntity->uuid = $detail['uuid'];
-        $newEntity->ads_id = $detail['ads_id'];
-        $detail['check_holding_btc'] !== null ? $newEntity->check_holding_btc = $detail['check_holding_btc'] : null;
-        $detail['check_days_joined'] !== null ? $newEntity->check_days_joined = $detail['check_days_joined'] : null;
-        $newEntity->save();
-
-        return $newEntity->id;
     }
 }
