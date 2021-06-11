@@ -10,7 +10,7 @@ use App\Contracts\Services\IPackageOptionsService;
 use Illuminate\Http\Request;
 
 
-class PackageOptionsController extends BaseController
+class UserAccountDetailsController extends BaseController
 {
 
     private $userRepo;

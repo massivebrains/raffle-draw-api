@@ -75,6 +75,39 @@ $api->version(
                 'uses' => 'PrizeController@find',
             ]);
 
+
+            /**
+             * Payment Providers Route
+             */
+
+            $api->get('payment_providers', [
+                'as' => 'payment_providers.findAll',
+                'uses' => 'PaymentProvidersController@findAll',
+            ]);
+
+            $api->get('payment_providers/{id}', [
+                'as' => 'payment_providers.find',
+                'uses' => 'PaymentProvidersController@find',
+            ]);
+
+
+
+            /**
+             * Banks Route
+             */
+
+            $api->get('banks', [
+                'as' => 'banks.findAll',
+                'uses' => 'BanksController@findAll',
+            ]);
+
+            $api->get('banks/{id}', [
+                'as' => 'banks.find',
+                'uses' => 'BanksController@find',
+            ]);
+
+
+
             /**
              * Buy Ticket Route
              */
@@ -82,6 +115,25 @@ $api->version(
             $api->post('buy_ticket', [
                 'as' => 'buy_ticket.create',
                 'uses' => 'BuyTicketController@create',
+            ]);
+
+            /**
+             * Nuban Verify Account No Route
+             */
+
+            $api->post('verify_account', [
+                'as' => 'nuban.verify',
+                'uses' => 'NubanVerifyController@verify',
+            ]);
+
+
+            /**
+             * Fund Wallet Route
+             */
+
+            $api->post('fund_wallet', [
+                'as' => 'wallet.fund',
+                'uses' => 'FundWalletController@fund',
             ]);
         });
 

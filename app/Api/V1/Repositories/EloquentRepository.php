@@ -44,7 +44,7 @@ abstract class EloquentRepository implements IRepository
     {
         $data =  $this->model->where('uuid', '=', $id)->first();
         $prunedData = BaseMapper::prune($data);
-        return $prunedData;
+        return $data;
     }
 
     /** {@inheritdoc}*/
@@ -62,7 +62,7 @@ abstract class EloquentRepository implements IRepository
     {
         $data =  $this->model->all();
         $prunedData = BaseMapper::prune($data);
-        return $prunedData;
+        return $data;
     }
 
     /** {@inheritdoc}*/
