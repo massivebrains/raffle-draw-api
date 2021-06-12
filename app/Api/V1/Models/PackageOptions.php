@@ -7,5 +7,4 @@ use Illuminate\Database\Eloquent\Model;
 class PackageOptions extends BaseModel
 {
     protected $table = "package_options";
-    protected $hidden = ["id", "package_id"];
 }

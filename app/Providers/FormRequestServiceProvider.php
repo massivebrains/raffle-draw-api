@@ -6,6 +6,9 @@ use App\Contracts\FormRequest\IBuyTicketRequest;
 use App\Contracts\FormRequest\ICreatePackageOptionsRequest;
 use App\Contracts\FormRequest\ICreatePackageRequest;
 use App\Contracts\FormRequest\ICreatePrizeRequest;
+use App\Contracts\FormRequest\ICreateUserAccountDetailRequest;
+use App\Contracts\FormRequest\IFundWalletRequest;
+use App\Contracts\FormRequest\INubanVerifyRequest;
 use App\Contracts\FormRequest\IUpdatePackageOptionsRequest;
 use App\Contracts\FormRequest\IUpdatePackageRequest;
 use App\Contracts\FormRequest\IUpdateUserRequest;
@@ -15,6 +18,9 @@ use App\Http\Request\BuyTicketRequest;
 use App\Http\Request\CreatePackageOptionsRequest;
 use App\Http\Request\CreatePackageRequest;
 use App\Http\Request\CreatePrizeRequest;
+use App\Http\Request\CreateUserAccountDetailRequest;
+use App\Http\Request\FundWalletRequest;
+use App\Http\Request\NubanVerifyRequest;
 use App\Http\Request\UpdatePackageOptionsRequest;
 use App\Http\Request\UpdatePackageRequest;
 use App\Http\Request\UpdateUserRequest;
@@ -42,5 +48,8 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(ICreatePackageOptionsRequest::class, CreatePackageOptionsRequest::class);
         $this->app->bind(IUpdatePackageOptionsRequest::class, UpdatePackageOptionsRequest::class);
         $this->app->bind(IBuyTicketRequest::class, BuyTicketRequest::class);
+        $this->app->bind(INubanVerifyRequest::class, NubanVerifyRequest::class);
+        $this->app->bind(IFundWalletRequest::class, FundWalletRequest::class);
+        $this->app->bind(ICreateUserAccountDetailRequest::class, CreateUserAccountDetailRequest::class);
     }
 }

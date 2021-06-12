@@ -141,12 +141,13 @@ class BuyTicketService extends BaseService implements IBuyTicketService
             ];
 
             $createSessionInput = CreateGameSessionDTO::fromRequest($data);
-            $newSessionID = $this->gameSessionRepo->create($createSessionInput);
+            $newSession = $this->gameSessionRepo->create($createSessionInput);
 
-            $activeSessionID = $newSessionID;
+            $activeSessionID = $newSession->id;
         } else {
             $activeSessionID = $getActiveSession->id;
         }
+
 
         //3. debit user - this part will be wrapped in a transaction.
 
@@ -182,7 +183,6 @@ class BuyTicketService extends BaseService implements IBuyTicketService
             $createInputData = CreatePaymentDTO::fromRequest($ticketData);
             $paymentData = $this->paymentRepo->create($createInputData);
 
-            var_dump($paymentData->id);
             //4. Generate Ticket
 
             $generatedTicketsArr = [];

@@ -57,7 +57,7 @@ class UserController extends BaseController
         $validation = $loginRequest->validate($request);
 
         if ($validation->fails()) {
-            $response_message = $this->customHttpResponse(400, 'Incorrect login details.');
+            $response_message = $this->customHttpResponse(400, 'Incorrect login details.', $validation->errors());
             return $response_message;
         }
 
@@ -71,7 +71,7 @@ class UserController extends BaseController
         $validation = $registerRequest->validate($request);
 
         if ($validation->fails()) {
-            $response_message = $this->customHttpResponse(400, 'Incorrect details all fields are required.');
+            $response_message = $this->customHttpResponse(400, 'Incorrect details all fields are required.', $validation->errors());
             return $response_message;
         }
 
@@ -85,7 +85,7 @@ class UserController extends BaseController
         $validation = $updateRequest->validate($request);
 
         if ($validation->fails()) {
-            $response_message = $this->customHttpResponse(400, 'Incorrect details check required fields.');
+            $response_message = $this->customHttpResponse(400, 'Incorrect details check required fields.', $validation->errors());
             return $response_message;
         }
 

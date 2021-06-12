@@ -34,37 +34,4 @@ class BuyTicketController extends BaseController
 
         return $this->buyTicketService->create();
     }
-
-
-    // public function update($id, Request $request, IUpdatePackageOptionsRequest $updateRequest)
-    // {
-
-    //     $validation = $updateRequest->validate($request);
-
-    //     if ($validation->fails()) {
-    //         $response_message = $this->customHttpResponse(400, 'Incorrect details check required fields.');
-    //         return $response_message;
-    //     }
-
-    //     return $this->packageOptionService->update($id);
-    // }
-
-    // public function find($id)
-    // {
-    //     return $this->packageOptionService->find($id);
-    // }
-
-
-    // public function findAll()
-    // {
-    //     return $this->packageOptionService->findAll();
-    // }
-
-
-
-    // public function delete($id)
-    // {
-
-    //     return $this->packageOptionService->softDelete($id);
-    // }
 }

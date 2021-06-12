@@ -24,18 +24,9 @@ class WalletEloquentRepository extends  EloquentRepository implements IWallet
     }
 
 
-    public function getWalletInfo($userID, $assetID)
+    public function findByUserID(int $userID)
     {
-        $res = DB::table('wallet_p2p as a')
-            ->select(
-                'a.id',
-                'a.uuid',
-                'a.user_id as owner',
-                'a.amount',
-            )
-            ->where("a.user_id", '=', $userID)
-            ->where("a.asset_id", '=', $assetID)
-            ->lockForUpdate()
+        $res = $this->walletModel->where("user_id", '=', $userID)
             ->first();
 
         return $res;

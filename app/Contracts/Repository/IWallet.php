@@ -28,4 +28,6 @@ interface IWallet
     public function debitWallet(string $id, int $amount);
 
     public function creditWallet(string $id, int $amount);
+
+    public function findByUserID(int $id);
 }
