@@ -2,63 +2,39 @@
 
 namespace App\Services;
 
+use App\Contracts\Repository\IBanks;
 use App\Contracts\Repository\IPackageOptions;
 use App\Contracts\Repository\IPackages;
 use App\Contracts\Repository\IUser;
+use App\Contracts\Repository\IUserAccountDetail;
 use App\Contracts\Services\IPackageOptionsService;
+use App\Contracts\Services\IUserAccountDetailService;
 use App\DTOs\CreatePackageOptionsDTO;
+use App\DTOs\CreateUserAccountDetailDTO;
 use App\DTOs\UpdatePackageOptionsDTO;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
-class UserAccountDetailService extends BaseService implements IPackageOptionsService
+class UserAccountDetailService extends BaseService implements IUserAccountDetailService
 {
 
     private $userRepo;
-    private $packageRepo;
-    private $packageOptionsRepo;
-    private $request;
-    private $payload;
+    private $banksRepo;
+    private $userAccDetailRepo;
 
-    public function __construct(IUser $userRepo, Request $request, IPackageOptions $packageOptionsRepo, IPackages $packageRepo)
+    public function __construct(IUser $userRepo, IBanks $banksRepo, IUserAccountDetail $userAccDetailRepo)
     {
         $this->userRepo = $userRepo;
-        $this->packageRepo = $packageRepo;
-        $this->packageOptionsRepo = $packageOptionsRepo;
-        $this->request = $request;
-    }
-
-    public function packageExist($id)
-    {
-        return $this->packageRepo->find($id);
-    }
-
-    public function recordExist($id)
-    {
-        return $this->packageOptionsRepo->find($id);
-    }
-
-
-    public function create()
-    {
-        $this->payload = $this->request->input();
-        return $this->processCreate();
-    }
-
-    public function update($id)
-    {
-
-        $this->user = $this->request->user('api');
-        $this->payload = $this->request->all();
-        return $this->processUpdate($id);
+        $this->banksRepo = $banksRepo;
+        $this->userAccDetailRepo = $userAccDetailRepo;
     }
 
 
     public function find($id)
     {
-        $result = $this->packageOptionsRepo->find($id);
+        $result = $this->userAccDetailRepo->find($id);
         if ($result) {
             $response_message = $this->customHttpResponse(200, 'Success.', $result);
             return $response_message;
@@ -69,87 +45,59 @@ class UserAccountDetailService extends BaseService implements IPackageOptionsSer
 
     public function findAll()
     {
-        $result = $this->packageOptionsRepo->findAll();
+        $result = $this->userAccDetailRepo->findAll();
         $response_message = $this->customHttpResponse(200, 'Success.', $result);
         return $response_message;
     }
 
-
-
-    public function processCreate()
+    public function create(CreateUserAccountDetailDTO $createInputData)
     {
-        $packageID = $this->request->package_id;
-        // var_dump($packageID);
-        $exist = $this->packageExist($packageID);
-        if (!$exist) {
-            $response_message = $this->customHttpResponse(400, 'Package with the specified ID does not exist.');
+
+        $dbUser = $this->userRepo->find($createInputData->user_id);
+        if (!$dbUser) {
+            $response_message = $this->customHttpResponse(400, 'User with the specified ID does not exist.');
             return $response_message;
         }
 
-        DB::beginTransaction();
-        try {
-            $this->payload['package_id'] = $exist->getOriginal('id');
-            $createInputData = CreatePackageOptionsDTO::fromRequest($this->payload);
-            $data = $this->packageOptionsRepo->create($createInputData);
 
-            DB::commit();
-
-
-            $response_message = $this->customHttpResponse(200, 'Entity added successful.');
-            return $response_message;
-        } catch (\Throwable $th) {
-
-            DB::rollBack();
-            Log::info("One of the DB statements failed. Error: " . $th);
-
-            $response_message = $this->customHttpResponse(500, 'Transaction Error.');
-            return $response_message;
-        }
-    }
-
-
-    public function processUpdate($id)
-    {
-
-        $exist = $this->recordExist($id);
-        if (!$exist) {
-            $response_message = $this->customHttpResponse(400, 'Record does not exist.');
+        $dbBank = $this->banksRepo->findByCode($createInputData->bank_code);
+        if (!$dbBank) {
+            $response_message = $this->customHttpResponse(400, 'Incorrect bank code.');
             return $response_message;
         }
 
 
         DB::beginTransaction();
         try {
-
-
-            $updateInputData = UpdatePackageOptionsDTO::fromRequest($this->payload);
-            $this->packageOptionsRepo->update($id, $updateInputData);
+            $createInputData->user_id = $dbUser->getOriginal('id');
+            $data = $this->userAccDetailRepo->create($createInputData);
 
             DB::commit();
 
 
-            $response_message = $this->customHttpResponse(200, 'Update successful.');
+            $response_message = $this->customHttpResponse(200, 'Account added successful.');
             return $response_message;
         } catch (\Throwable $th) {
 
             DB::rollBack();
             Log::info("One of the DB statements failed. Error: " . $th);
 
-            $response_message = $this->customHttpResponse(500, 'Transaction Error.');
+            $response_message = $this->customHttpResponse(500, 'Transaction Error adding account.');
             return $response_message;
         }
     }
+
 
     public function softDelete($id)
     {
-        $exist = $this->recordExist($id);
-        if (!$exist) {
+        $dbUserAccDetail = $this->userAccDetailRepo->find($id);
+        if (!$dbUserAccDetail) {
             $response_message = $this->customHttpResponse(400, 'Record does not exist.');
             return $response_message;
         }
 
         try {
-            $this->packageOptionsRepo->delete($id);
+            $this->userAccDetailRepo->delete($id);
 
             $response_message = $this->customHttpResponse(200, 'Entity deleted successful.');
             return $response_message;

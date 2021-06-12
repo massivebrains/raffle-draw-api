@@ -135,6 +135,31 @@ $api->version(
                 'as' => 'wallet.fund',
                 'uses' => 'FundWalletController@fund',
             ]);
+
+            /**
+             * User Account Details / Bank Account Route
+             */
+
+
+            $api->post('bank_account', [
+                'as' => 'bank_account.create',
+                'uses' => 'UserAccountDetailController@create',
+            ]);
+
+            $api->get('bank_account', [
+                'as' => 'bank_account.findAll',
+                'uses' => 'UserAccountDetailController@findAll',
+            ]);
+
+            $api->get('bank_account/{id}', [
+                'as' => 'bank_account.find',
+                'uses' => 'UserAccountDetailController@find',
+            ]);
+
+            $api->delete('bank_account/{id}', [
+                'as' => 'bank_account.delete',
+                'uses' => 'UserAccountDetailController@delete',
+            ]);
         });
 
 

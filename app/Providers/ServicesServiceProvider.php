@@ -11,6 +11,7 @@ use App\Contracts\Services\IPackageOptionsService;
 use App\Contracts\Services\IPackageService;
 use App\Contracts\Services\IPaymentProvidersService;
 use App\Contracts\Services\IPrizeService;
+use App\Contracts\Services\IUserAccountDetailService;
 use App\Contracts\Services\IUserService;
 use App\Services\BanksService;
 use App\Services\BuyTicketService;
@@ -21,6 +22,7 @@ use App\Services\PackageOptionsService;
 use App\Services\PackageService;
 use App\Services\PaymentProvidersService;
 use App\Services\PrizeService;
+use App\Services\UserAccountDetailService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,5 +47,6 @@ class ServicesServiceProvider extends ServiceProvider
         $this->app->bind(IFundWalletService::class, FundWalletService::class);
         $this->app->bind(IPaymentProvidersService::class, PaymentProvidersService::class);
         $this->app->bind(IBanksService::class, BanksService::class);
+        $this->app->bind(IUserAccountDetailService::class, UserAccountDetailService::class);
     }
 }
