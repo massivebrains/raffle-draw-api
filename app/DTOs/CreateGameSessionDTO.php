@@ -25,8 +25,9 @@ class CreateGameSessionDTO extends BaseDTO
 
     public static function getExpiry($arr)
     {
+        $defaultCloseTime = "17:00:00"; //5pm 
         $daysBeforeExpire = $arr['period'];
-        $packageClostTime = $arr['closes_at'];
+        $packageClostTime = $arr['closes_at'] ?: $defaultCloseTime; //Elvis operator here :)
 
         $expiryDate = Carbon::now()->addDays($daysBeforeExpire);
 
@@ -34,6 +35,8 @@ class CreateGameSessionDTO extends BaseDTO
 
         $actualExpireDateTime = $dateOnly . " " . $packageClostTime;
 
-        return Carbon::parse($actualExpireDateTime);
+        $res = Carbon::parse($actualExpireDateTime)->subHour();
+
+        return $res;
     }
 }

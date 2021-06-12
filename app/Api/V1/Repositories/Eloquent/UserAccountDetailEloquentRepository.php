@@ -5,15 +5,16 @@ namespace App\Api\V1\Repositories\Eloquent;
 use App\Api\V1\Models\UserAccountDetail;
 use App\Api\V1\Repositories\EloquentRepository;
 use App\Contracts\Repository\IUserAccountDetail;
+use App\DTOs\CreateUserAccountDetailDTO;
 
 class UserAccountDetailEloquentRepository extends  EloquentRepository implements IUserAccountDetail
 {
-    private $UPAD;
+    private $userAccDetailModel;
 
-    public function __construct(UserAccountDetail $UPAD)
+    public function __construct(UserAccountDetail $userAccDetailModel)
     {
         parent::__construct();
-        $this->UPAD = $UPAD;
+        $this->userAccDetailModel = $userAccDetailModel;
     }
 
     public function model()
@@ -21,12 +22,13 @@ class UserAccountDetailEloquentRepository extends  EloquentRepository implements
         return UserAccountDetail::class;
     }
 
-    public function getIDsByUUID($uuid, $userID)
+
+    public function create(CreateUserAccountDetailDTO $details)
     {
-        $res = $this->UPAD->select('id', 'payment_method_id')
-            ->where('uuid', '=', $uuid)
-            ->where('user_id', '=', $userID)
-            ->first();
+        //convert POPO to array for the create() quick wrapper below
+        $details =  json_decode(json_encode($details), true);
+        $res = $this->userAccDetailModel->create($details);
+
         return $res;
     }
 }

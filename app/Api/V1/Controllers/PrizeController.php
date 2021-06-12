@@ -41,7 +41,7 @@ class PrizeController extends BaseController
         $validation = $prizeRequest->validate($request);
 
         if ($validation->fails()) {
-            $response_message = $this->customHttpResponse(400, 'Incorrect details fill required fields.');
+            $response_message = $this->customHttpResponse(400, 'Incorrect details fill required fields.', $validation->errors());
             return $response_message;
         }
 

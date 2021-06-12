@@ -4,7 +4,6 @@ namespace App\Contracts\Repository;
 
 use App\Contracts\IRepository;
 
-interface IBanks extends IRepository
+interface IPaymentProviders extends IRepository
 {
-    public function findByCode(string $code);
 }

@@ -32,7 +32,7 @@ class PackageController extends BaseController
         $validation = $packageRequest->validate($request);
 
         if ($validation->fails()) {
-            $response_message = $this->customHttpResponse(400, 'Incorrect details fill required fields.');
+            $response_message = $this->customHttpResponse(400, 'Incorrect details fill required fields.', $validation->errors());
             return $response_message;
         }
 
@@ -46,7 +46,7 @@ class PackageController extends BaseController
         $validation = $updateRequest->validate($request);
 
         if ($validation->fails()) {
-            $response_message = $this->customHttpResponse(400, 'Incorrect details check required fields.');
+            $response_message = $this->customHttpResponse(400, 'Incorrect details check required fields.', $validation->errors());
             return $response_message;
         }
 

@@ -1,0 +1,1444 @@
+{
+	"info": {
+		"_postman_id": "72978417-0248-48a0-b896-ed105c4b623e",
+		"name": "Raffle Draw",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Verify Account No",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "acc_no",
+							"value": "0053006315",
+							"type": "text"
+						},
+						{
+							"key": "bank_code",
+							"value": "058",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/verify_account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"verify_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "oauth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "udorr",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "tester",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "ElNfKN8eosO0dbPndi6jSsD9+lXoxGV1269S/147b6c=",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://api.raffle/oauth/token",
+					"protocol": "http",
+					"host": [
+						"api",
+						"raffle"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/be71e6db4af011eb81e1024237d544ad",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"be71e6db4af011eb81e1024237d544ad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "udofaa",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "jakata",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User New",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "udofaat",
+							"type": "text"
+						},
+						{
+							"key": "firstname",
+							"value": "Ezugom",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "nelsonsmrt@gma.ffaat",
+							"type": "text"
+						},
+						{
+							"key": "surname",
+							"value": "Okpara",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "08030659872",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "testing",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User - Update",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\": \"jakata\",\n    \"email\": \"nelsoooo@fdf.com\",\n    \"surname\": \"faoopp\",\n    \"phone\": \"080334434343\",\n    \"password\": \"jakata\",\n    \"foregin\": \"testing\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/17a39b58d6bf4b2686cb7203dda4e596",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"17a39b58d6bf4b2686cb7203dda4e596"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prize - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/prize/e4b2ab592159432f852e226a5c7b27fc",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"prize",
+						"e4b2ab592159432f852e226a5c7b27fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prize - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/prize",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"prize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prize - Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "300k",
+							"type": "text"
+						},
+						{
+							"key": "value",
+							"value": "300000",
+							"type": "text"
+						},
+						{
+							"key": "desc",
+							"value": "this is a descr",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/prize",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"prize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prize - Remove",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/prize/2fa6bdf7764948608d456d5c9cf09b63",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"prize",
+						"2fa6bdf7764948608d456d5c9cf09b63"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package/ddfafb9704b149a7861394a682965b93",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package",
+						"ddfafb9704b149a7861394a682965b93"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package - Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "300k pack",
+							"type": "text"
+						},
+						{
+							"key": "prize_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "expected_winners",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "desc",
+							"value": "this is a descr",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package - Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"jakata\",\n    \"prize_id\": \"2\",\n    \"expected_winners\": \"4\",\n    \"desc\": \"a comment\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package/64421a07d06a49ea949bab1f9c353e0e",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package",
+						"64421a07d06a49ea949bab1f9c353e0e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package Options - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package_options",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package_options"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package Options - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package_options/4fff4896f0a74b7b9c7285c53d993931",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package_options",
+						"4fff4896f0a74b7b9c7285c53d993931"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package Options - Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "package_option_id",
+							"value": "ddfafb9704b149a7861394a682965b93",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "2000",
+							"type": "text"
+						},
+						{
+							"key": "ticket_qty",
+							"value": "2",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package_options",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package_options"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package Options - Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"price\": \"200002\",\n    \"ticket_qty\": \"40\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package_options/4fff4896f0a74b7b9c7285c53d993931",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package_options",
+						"4fff4896f0a74b7b9c7285c53d993931"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Package Options - Remove",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/package_options/4fff4896f0a74b7b9c7285c53d993931",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"package_options",
+						"4fff4896f0a74b7b9c7285c53d993931"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy Ticket - Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "package_option_id",
+							"value": "3b319664cf784102a96249cf1fc55892",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/buy_ticket",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"buy_ticket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fund Wallet",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "amount",
+							"value": "20000",
+							"type": "text"
+						},
+						{
+							"key": "payment_provider_id",
+							"value": "3243590834",
+							"description": "Paystack, Flutterwave, Stripe, etc. You can get their ids by calling the [payment_provider] endpoint.",
+							"type": "text"
+						},
+						{
+							"key": "payment_ref_code",
+							"value": "55230494",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/fund_wallet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"fund_wallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment Providers - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/payment_providers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"payment_providers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment Providers - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/payment_providers/5a49dfea0c0746e1854a066c084ab932",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"payment_providers",
+						"5a49dfea0c0746e1854a066c084ab932"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Banks - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/banks",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"banks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Banks - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/banks/4fff4896f0a74b7b9c7285c53d993931",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"banks",
+						"4fff4896f0a74b7b9c7285c53d993931"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Bank Account - Create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "be71e6db4af011eb81e1024237d544ad",
+							"type": "text"
+						},
+						{
+							"key": "acc_name",
+							"value": "Chukwuezugo Okpara",
+							"type": "text"
+						},
+						{
+							"key": "acc_no",
+							"value": "2938849399",
+							"type": "text"
+						},
+						{
+							"key": "bank_code",
+							"value": "058",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/bank_account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"bank_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Bank Account - Remove",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/bank_account/59bfcf3d56a245528cd11409327b7b3b",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"bank_account",
+						"59bfcf3d56a245528cd11409327b7b3b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Bank Account - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/bank_account",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"bank_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Bank Account - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/bank_account/59bfcf3d56a245528cd11409327b7b3b",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"bank_account",
+						"59bfcf3d56a245528cd11409327b7b3b"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "Bearer {{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": ""
+		},
+		{
+			"key": "baseUrlLocal",
+			"value": ""
+		},
+		{
+			"key": "baseUrlRemote",
+			"value": ""
+		}
+	]
+}
