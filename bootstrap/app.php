@@ -67,6 +67,8 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
     'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
+    'check_winner_complete' => App\Http\Middleware\CheckWinnerCompleteMiddleware::class,
+
 ]);
 
 /*

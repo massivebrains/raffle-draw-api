@@ -7,6 +7,8 @@ use App\Api\V1\Repositories\EloquentRepository;
 use App\Contracts\Repository\IPackageOptions;
 use App\DTOs\CreatePackageOptionsDTO;
 use App\DTOs\UpdatePackageOptionsDTO;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PackageOptionsEloquentRepository extends  EloquentRepository implements IPackageOptions
 {
@@ -50,5 +52,14 @@ class PackageOptionsEloquentRepository extends  EloquentRepository implements IP
             ->update($details);
 
         return $res;
+    }
+
+    public function updateSells($packageOptionID)
+    {
+        return $this->packageOptionsModel->where('uuid', $packageOptionID)
+            ->update([
+                'purchase_count' => DB::raw("purchase_count + 1"),
+                'last_purchased_at' => Carbon::now(),
+            ]);
     }
 }
