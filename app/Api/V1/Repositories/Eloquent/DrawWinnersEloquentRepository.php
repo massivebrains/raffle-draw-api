@@ -32,4 +32,13 @@ class DrawWinnersEloquentRepository extends  EloquentRepository implements IDraw
 
         return $res;
     }
+
+    public function findBySession(int $sessionID)
+    {
+        $res = $this->drawModel
+            ->where('session_id', $sessionID)
+            ->get();
+        return $res;
+    }
+
 }

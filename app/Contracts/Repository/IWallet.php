@@ -2,9 +2,10 @@
 
 namespace App\Contracts\Repository;
 
+use App\Contracts\IRepository;
 use App\DTOs\CreateWalletDTO;
 
-interface IWallet
+interface IWallet extends IRepository
 {
     /**
      * Creates a user.

@@ -11,6 +11,7 @@ class CreateWalletDebitDTO extends BaseDTO
     public string $activity_type_id;
     public string $session_id;
     public string $package_option_id;
+    public string $payment_id;
 
 
     public static function fromRequest(array $params)
@@ -22,6 +23,7 @@ class CreateWalletDebitDTO extends BaseDTO
             'activity_type_id' => $params['activity_type_id'],
             'session_id' => $params['session_id'],
             'package_option_id' => $params['package_option_id'],
+            'payment_id' => $params['payment_id'],
         ]);
     }
 }

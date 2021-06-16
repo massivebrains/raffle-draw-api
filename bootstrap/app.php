@@ -68,6 +68,10 @@ $app->routeMiddleware([
     'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
     'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
     'check_winner_complete' => App\Http\Middleware\CheckWinnerCompleteMiddleware::class,
+    'min_balance' => App\Http\Middleware\MinBalanceMiddleware::class,
+    'min_max_withdraw' => App\Http\Middleware\MinMaxWithdrawMiddleware::class,
+    'min_max_deposit' => App\Http\Middleware\MinMaxDepositMiddleware::class,
+
 
 ]);
 
