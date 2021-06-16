@@ -44,6 +44,7 @@ class GameSessionEloquentRepository extends  EloquentRepository implements IGame
         return $res;
     }
 
+
     public function findAllActive()
     {
         $res = $this->sessionModel
@@ -51,7 +52,6 @@ class GameSessionEloquentRepository extends  EloquentRepository implements IGame
             ->first();
         return $res;
     }
-
 
     public function winnerCompleted($sessionID)
     {

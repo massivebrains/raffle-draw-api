@@ -60,5 +60,6 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IShuffleTicketRequest::class, ShuffleTicketRequest::class);
         $this->app->bind(IDrawTicketRequest::class, DrawTicketRequest::class);
         $this->app->bind(IWithdrawRequest::class, WithdrawRequest::class);
+
     }
 }

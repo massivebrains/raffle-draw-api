@@ -40,4 +40,5 @@ class DrawWinnersEloquentRepository extends  EloquentRepository implements IDraw
             ->get();
         return $res;
     }
+
 }
