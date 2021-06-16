@@ -12,7 +12,15 @@ use Illuminate\Http\Request;
 
 class FundWalletController extends BaseController
 {
-    public function fund(Request $request, IFundWalletRequest $fundWalletRequest, IFundWalletService $fundWalletService)
+
+    private $fundWalletService;
+
+    public function __construct(IFundWalletService $fundWalletService)
+    {
+        $this->fundWalletService = $fundWalletService;
+    }
+
+    public function fund(Request $request, IFundWalletRequest $fundWalletRequest)
     {
 
         $validation = $fundWalletRequest->validate($request);
@@ -24,6 +32,23 @@ class FundWalletController extends BaseController
 
 
         $tnxData = FundWalletDTO::fromRequest($request);
-        return $fundWalletService->fundAccount($tnxData);
+        return $this->fundWalletService->fundAccount($tnxData);
+    }
+
+    public function find($id)
+    {
+        return $this->fundWalletService->find($id);
+    }
+
+
+    public function findSelf()
+    {
+        return $this->fundWalletService->findSelf();
+    }
+
+
+    public function findAll()
+    {
+        return $this->fundWalletService->findAll();
     }
 }

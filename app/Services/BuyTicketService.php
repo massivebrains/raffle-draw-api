@@ -28,6 +28,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 
 class BuyTicketService extends BaseService implements IBuyTicketService
@@ -110,7 +111,10 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $winningTicketDetailedArr = [];
         foreach ($drawnResult as $ticket) {
 
+            $uuid = str_replace("-", "", Str::uuid());
+
             $arr = [
+                'uuid' => $uuid,
                 'ticket_id' => $ticket->id,
                 'draw_index' => $ticket->draw_index,
                 'session_id' => $ticket->session_id,
@@ -302,12 +306,15 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
 
 
+            $createInputData = CreatePaymentDTO::fromRequest($ticketData);
+            $paymentData = $this->paymentRepo->create($createInputData);
+
+            $ticketData['payment_id'] = $paymentData->id;
             $createInputData = CreateWalletDebitDTO::fromRequest($ticketData);
             $data = $this->walletDebitLogRepo->create($createInputData);
 
 
-            $createInputData = CreatePaymentDTO::fromRequest($ticketData);
-            $paymentData = $this->paymentRepo->create($createInputData);
+
 
             //4. Generate Ticket
 

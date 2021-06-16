@@ -24,6 +24,7 @@ use App\Api\V1\Repositories\Eloquent\UserVerificationEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\WalletCreditLogEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\WalletDebitLogEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\WalletEloquentRepository;
+use App\Api\V1\Repositories\Eloquent\WithdrawalEloquentRepository;
 use App\Contracts\Repository\IBanks;
 use App\Contracts\Repository\IDrawWinner;
 use App\Contracts\Repository\IGameSession;
@@ -46,6 +47,7 @@ use App\Contracts\Repository\IUserVerificationRepository;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletCreditLog;
 use App\Contracts\Repository\IWalletDebitLog;
+use App\Contracts\Repository\IWithdrawalRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -81,5 +83,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IWallet::class, WalletEloquentRepository::class);
         $this->app->bind(IWalletDebitLog::class, WalletDebitLogEloquentRepository::class);
         $this->app->bind(IWalletCreditLog::class, WalletCreditLogEloquentRepository::class);
+        $this->app->bind(IWithdrawalRepository::class, WithdrawalEloquentRepository::class);
     }
 }

@@ -9,5 +9,6 @@ interface IUserAccountDetailService
     public function create(CreateUserAccountDetailDTO $data);
     public function find(string $id);
     public function findAll();
+    public function findAllByOwner();
     public function softDelete(string $id);
 }

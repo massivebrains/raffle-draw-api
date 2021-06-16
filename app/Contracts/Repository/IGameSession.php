@@ -19,6 +19,8 @@ interface IGameSession extends IRepository
 
     public function getActiveSession(string $packageID);
 
+    public function findAllActive();
+
     public function winnerCompleted(string $sessionID);
 
     public function updateShuffle(string $sessionID);

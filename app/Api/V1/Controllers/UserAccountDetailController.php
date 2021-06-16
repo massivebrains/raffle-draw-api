@@ -53,6 +53,12 @@ class UserAccountDetailController extends BaseController
     }
 
 
+    public function findAllByOwner()
+    {
+        return $this->userAccDetailsService->findAllByOwner();
+    }
+
+
 
     public function delete($id)
     {
