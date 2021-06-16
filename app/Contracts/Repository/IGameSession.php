@@ -2,9 +2,10 @@
 
 namespace App\Contracts\Repository;
 
+use App\Contracts\IRepository;
 use App\DTOs\CreateGameSessionDTO;
 
-interface IGameSession
+interface IGameSession extends IRepository
 {
 
     /**
@@ -17,4 +18,12 @@ interface IGameSession
 
 
     public function getActiveSession(string $packageID);
+
+    public function winnerCompleted(string $sessionID);
+
+    public function updateShuffle(string $sessionID);
+
+    public function updateSells(string $sessionID);
+
+    public function updateDraw(string $sessionID, int $selectedCount);
 }

@@ -113,9 +113,27 @@ $api->version(
              */
 
             $api->post('buy_ticket', [
-                'as' => 'buy_ticket.create',
+                'as' => 'ticket.buy',
                 'uses' => 'BuyTicketController@create',
             ]);
+
+
+
+            $api->group(['middleware' => [
+                'check_winner_complete',
+            ]], function ($api) {
+
+
+                $api->post('shuffle_ticket', [
+                    'as' => 'ticket.shuffle',
+                    'uses' => 'BuyTicketController@shuffleTicket',
+                ]);
+
+                $api->post('draw_ticket', [
+                    'as' => 'ticket.draw',
+                    'uses' => 'BuyTicketController@drawTicket',
+                ]);
+            });
 
             /**
              * Nuban Verify Account No Route
