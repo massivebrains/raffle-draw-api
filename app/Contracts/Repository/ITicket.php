@@ -3,6 +3,7 @@
 namespace App\Contracts\Repository;
 
 use App\DTOs\CreateTicketDTO;
+use App\DTOs\UpdateDrawDTO;
 
 interface ITicket
 {
@@ -13,4 +14,7 @@ interface ITicket
      * @throws RepositoryException
      */
     public function create(CreateTicketDTO $attributes);
+    public function shuffleTicket(string $sessionID);
+    public function findByDrawIndex(array $drawIndexes);
+    public function updateTicketDraw(array $ticketIDs, UpdateDrawDTO $updateDrawData);
 }

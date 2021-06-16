@@ -2,23 +2,28 @@
 
 namespace App\Services;
 
+use App\Contracts\Repository\IDrawWinner;
 use App\Contracts\Repository\IGameSession;
 use App\Contracts\Repository\IPackageOptions;
 use App\Contracts\Repository\IPackages;
 use App\Contracts\Repository\IPayment;
+use App\Contracts\Repository\ISysSettingsRepository;
 use App\Contracts\Repository\ITicket;
 use App\Contracts\Repository\IUser;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletDebitLog;
 use App\Contracts\Services\IBuyTicketService;
 use App\DTOs\CreateGameSessionDTO;
-use App\DTOs\CreatePackageDTO;
 use App\DTOs\CreatePaymentDTO;
 use App\DTOs\CreateTicketDTO;
 use App\DTOs\CreateWalletDebitDTO;
-use App\DTOs\UpdatePackageDTO;
+use App\DTOs\DrawTicketDTO;
+use App\DTOs\DrawWinnersDTO;
+use App\DTOs\ShuffleTicketDTO;
+use App\DTOs\UpdateDrawDTO;
 use App\Plugins\PUGXShortId\Shortid;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -39,6 +44,8 @@ class BuyTicketService extends BaseService implements IBuyTicketService
     private $gameSessionRepo;
     private $paymentRepo;
     private $ticketRepo;
+    private $systemRepo;
+    private $drawWinnerRepo;
 
     public function __construct(
         IUser $userRepo,
@@ -49,7 +56,9 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         IPackageOptions $packageOptionRepo,
         IGameSession $gameSessionRepo,
         IPayment $paymentRepo,
-        ITicket $ticketRepo
+        ITicket $ticketRepo,
+        ISysSettingsRepository $systemRepo,
+        IDrawWinner $drawWinnerRepo
     ) {
         $this->userRepo = $userRepo;
         $this->packageRepo = $packageRepo;
@@ -59,13 +68,11 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $this->gameSessionRepo = $gameSessionRepo;
         $this->paymentRepo = $paymentRepo;
         $this->ticketRepo = $ticketRepo;
+        $this->systemRepo = $systemRepo;
+        $this->drawWinnerRepo = $drawWinnerRepo;
         $this->request = $request;
-    }
 
-
-    public function recordExist($id)
-    {
-        return $this->packageRepo->find($id);
+        $this->user = $this->request->user('api');
     }
 
 
@@ -75,21 +82,139 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $this->package_option_id = $this->request->package_option_id;
         $this->user = $this->request->user('api');
 
-        return $this->processCreate();
+        return $this->buyTicket();
     }
 
 
-
-    public function find($id)
+    public function getDrawIndexes($limit): array
     {
-        $result = $this->packageRepo->find($id);
-        if ($result) {
-            $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        $drawIndexArr = [];
+        for ($i = 1; $i < $limit + 1; $i++) {
+            $drawIndexArr[] = $i;
+        }
+        return  $drawIndexArr;
+    }
+
+    public function getDrawnTicketsUUID(Collection $drawnTickets): array
+    {
+        $drawIndexArr = [];
+        foreach ($drawnTickets as $ticket) {
+            $drawIndexArr[] = $ticket->uuid;
+        }
+        return  $drawIndexArr;
+    }
+
+
+    public function getWinningTicketsdetailed(Collection $drawnResult): array
+    {
+        $winningTicketDetailedArr = [];
+        foreach ($drawnResult as $ticket) {
+
+            $arr = [
+                'ticket_id' => $ticket->id,
+                'draw_index' => $ticket->draw_index,
+                'session_id' => $ticket->session_id,
+                'drawn_by' => $this->user->id,
+                'package_id' => $ticket->package_id,
+                'owner_id' => $ticket->user_id,
+            ];
+
+            $winningTicketDetailedArr[] = $arr;
+        }
+        return $winningTicketDetailedArr;
+    }
+
+
+    public function drawTicket(DrawTicketDTO $drawInputData)
+    {
+
+        $sessionID = $drawInputData->session_id;
+        $dbGameSession = $this->gameSessionRepo->find($sessionID);
+
+        if (!$dbGameSession) {
+            $response_message = $this->customHttpResponse(400, 'No session with that ID exist.');
             return $response_message;
         }
-        $response_message = $this->customHttpResponse(400, 'Record does not exist.', $result);
-        return $response_message;
+
+        if (!$dbGameSession->is_currently_shuffled) {
+            $response_message = $this->customHttpResponse(400, 'You have to re-shuffle before another pick.');
+            return $response_message;
+        }
+
+        DB::beginTransaction();
+        try {
+
+            $systemSettings = $this->systemRepo->getSystemSettings();
+            $ticketSelectPerDraw = $systemSettings->ticket_select_per_draw;
+
+            //make an array of indexes to select
+            $drawIndexArr = $this->getDrawIndexes($ticketSelectPerDraw);
+            $drawnResult = $this->ticketRepo->findByDrawIndex($drawIndexArr);
+
+            //make an array of selected tickets uuids to update
+            $drawnTicketsUUID = $this->getDrawnTicketsUUID($drawnResult);
+
+            $totalResult = count($drawnTicketsUUID);
+
+            if ($totalResult) {
+
+                $updateDrawInput = UpdateDrawDTO::fromRequest(['user_id' => $this->user->id]);
+                $this->ticketRepo->updateTicketDraw($drawnTicketsUUID, $updateDrawInput);
+
+                $this->gameSessionRepo->updateDraw($sessionID, $totalResult);
+
+
+                $winningTicketDetailedArr = $this->getWinningTicketsdetailed($drawnResult);
+
+
+                $this->drawWinnerRepo->create($winningTicketDetailedArr);
+            }
+
+            DB::commit();
+
+            $response_message = $this->customHttpResponse(200, 'Tickets drawn successfully.Congrats winner(s)!', $drawnResult);
+            return $response_message;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::info("Error with db ticket drawing query: " . $th);
+
+            $response_message = $this->customHttpResponse(500, 'Transaction Error Drawing Ticket.');
+            return $response_message;
+        }
     }
+
+
+
+    public function shuffleTicket(ShuffleTicketDTO $shuffleInputData)
+    {
+        $sessionID = $shuffleInputData->session_id;
+        $dbGameSession = $this->gameSessionRepo->find($sessionID);
+
+        if (!$dbGameSession) {
+            $response_message = $this->customHttpResponse(400, 'No session with that ID exist.');
+            return $response_message;
+        }
+
+        DB::beginTransaction();
+        try {
+
+            $this->ticketRepo->shuffleTicket($sessionID);
+
+            $this->gameSessionRepo->updateShuffle($sessionID);
+
+            DB::commit();
+
+            $response_message = $this->customHttpResponse(200, 'Tickets Shuffled successfully.');
+            return $response_message;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::info("Error with db ticket shuffling query: " . $th);
+
+            $response_message = $this->customHttpResponse(500, 'Transaction Error Shuffling.');
+            return $response_message;
+        }
+    }
+
 
     public function generateTicketCode()
     {
@@ -98,7 +223,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
 
 
-    public function processCreate()
+    public function buyTicket()
     {
 
         /**
@@ -111,7 +236,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $packagePricing = $this->packageOptionRepo->find($this->package_option_id);
 
         if (!$packagePricing) {
-            $response_message = $this->customHttpResponse(400, 'The option you choose does not exist');
+            $response_message = $this->customHttpResponse(400, 'The package option you choose does not exist');
             return $response_message;
         }
 
@@ -136,7 +261,8 @@ class BuyTicketService extends BaseService implements IBuyTicketService
                 'package_id' => $packageInternalID,
                 'initiated_by' => $this->user->id,
                 'period' => $daysBeforeDraw,
-                'closes_at' => $packageClosingTime
+                'closes_at' => $packageClosingTime,
+                'expected_winners' => $package->expected_winners,
 
             ];
 
@@ -197,6 +323,15 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
                 $generatedTicketsArr['tickets'][] = $code;
             }
+
+
+            //5. Update sells if existing session
+            if ($getActiveSession) {
+                $sessionID = $getActiveSession->uuid;
+                $this->gameSessionRepo->updateSells($sessionID);
+            }
+
+            $this->packageOptionRepo->updateSells($packagePricing->uuid);
 
             DB::commit();
 

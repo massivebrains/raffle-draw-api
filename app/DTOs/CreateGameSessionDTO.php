@@ -13,12 +13,21 @@ class CreateGameSessionDTO extends BaseDTO
 
     public string $initiated_by;
 
+    public string $expected_winners;
+
+    public string $last_sell_at;
+
+    public string $package_sell_count;
+
     public static function fromRequest(array $params)
     {
         return new self([
             'package_id' => $params['package_id'],
             'expires_at' => self::getExpiry($params),
             'initiated_by' => $params['initiated_by'],
+            'expected_winners' => $params['expected_winners'],
+            'last_sell_at' => Carbon::now(),
+            'package_sell_count' => 1,
 
         ]);
     }

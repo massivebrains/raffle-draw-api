@@ -7,8 +7,10 @@ use App\Contracts\FormRequest\ICreatePackageOptionsRequest;
 use App\Contracts\FormRequest\ICreatePackageRequest;
 use App\Contracts\FormRequest\ICreatePrizeRequest;
 use App\Contracts\FormRequest\ICreateUserAccountDetailRequest;
+use App\Contracts\FormRequest\IDrawTicketRequest;
 use App\Contracts\FormRequest\IFundWalletRequest;
 use App\Contracts\FormRequest\INubanVerifyRequest;
+use App\Contracts\FormRequest\IShuffleTicketRequest;
 use App\Contracts\FormRequest\IUpdatePackageOptionsRequest;
 use App\Contracts\FormRequest\IUpdatePackageRequest;
 use App\Contracts\FormRequest\IUpdateUserRequest;
@@ -19,8 +21,10 @@ use App\Http\Request\CreatePackageOptionsRequest;
 use App\Http\Request\CreatePackageRequest;
 use App\Http\Request\CreatePrizeRequest;
 use App\Http\Request\CreateUserAccountDetailRequest;
+use App\Http\Request\DrawTicketRequest;
 use App\Http\Request\FundWalletRequest;
 use App\Http\Request\NubanVerifyRequest;
+use App\Http\Request\ShuffleTicketRequest;
 use App\Http\Request\UpdatePackageOptionsRequest;
 use App\Http\Request\UpdatePackageRequest;
 use App\Http\Request\UpdateUserRequest;
@@ -51,5 +55,7 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(INubanVerifyRequest::class, NubanVerifyRequest::class);
         $this->app->bind(IFundWalletRequest::class, FundWalletRequest::class);
         $this->app->bind(ICreateUserAccountDetailRequest::class, CreateUserAccountDetailRequest::class);
+        $this->app->bind(IShuffleTicketRequest::class, ShuffleTicketRequest::class);
+        $this->app->bind(IDrawTicketRequest::class, DrawTicketRequest::class);
     }
 }
