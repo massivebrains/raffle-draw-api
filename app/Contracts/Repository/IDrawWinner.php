@@ -8,4 +8,5 @@ use App\DTOs\DrawWinnersDTO;
 interface IDrawWinner extends IRepository
 {
     public function create(array $details);
+    public function findBySession(int $sessionID);
 }

@@ -31,4 +31,9 @@ class UserAccountDetailEloquentRepository extends  EloquentRepository implements
 
         return $res;
     }
+
+    public function findAllByOwner(int $userID)
+    {
+        return $this->userAccDetailModel->where('user_id', $userID)->get();
+    }
 }

@@ -15,7 +15,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     protected $table = "user";
 
     // When querying the user, do not expose the password
-    protected $hidden = ['password', 'deleted_at', 'encrypted_password'];
+    protected $hidden = ['id', 'password', 'deleted_at', 'encrypted_password'];
 
     public function findForPassport($username)
     {

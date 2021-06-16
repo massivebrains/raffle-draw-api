@@ -23,12 +23,14 @@ class UserAccountDetailService extends BaseService implements IUserAccountDetail
     private $userRepo;
     private $banksRepo;
     private $userAccDetailRepo;
+    private $user;
 
-    public function __construct(IUser $userRepo, IBanks $banksRepo, IUserAccountDetail $userAccDetailRepo)
+    public function __construct(Request $request, IUser $userRepo, IBanks $banksRepo, IUserAccountDetail $userAccDetailRepo)
     {
         $this->userRepo = $userRepo;
         $this->banksRepo = $banksRepo;
         $this->userAccDetailRepo = $userAccDetailRepo;
+        $this->user = $request->user('api');
     }
 
 
@@ -40,6 +42,14 @@ class UserAccountDetailService extends BaseService implements IUserAccountDetail
             return $response_message;
         }
         $response_message = $this->customHttpResponse(400, 'Record does not exist.', $result);
+        return $response_message;
+    }
+
+    public function findAllByOwner()
+    {
+
+        $result = $this->userAccDetailRepo->findAllByOwner($this->user->id);
+        $response_message = $this->customHttpResponse(400, 'Success.', $result);
         return $response_message;
     }
 

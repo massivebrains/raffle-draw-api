@@ -13,7 +13,7 @@ class BanksEloquentRepository extends  EloquentRepository implements IBanks
 
     public function __construct(Banks $banksModel)
     {
-        // parent::__construct();
+        parent::__construct();
         $this->banksModel = $banksModel;
     }
 

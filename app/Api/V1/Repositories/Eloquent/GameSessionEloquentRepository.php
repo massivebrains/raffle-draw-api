@@ -44,6 +44,14 @@ class GameSessionEloquentRepository extends  EloquentRepository implements IGame
         return $res;
     }
 
+    public function findAllActive()
+    {
+        $res = $this->sessionModel
+            ->where(DB::raw('TIMESTAMPDIFF(SECOND,CURRENT_TIMESTAMP,expires_at)'), '>', '0') //has not expired.
+            ->first();
+        return $res;
+    }
+
 
     public function winnerCompleted($sessionID)
     {

@@ -146,13 +146,80 @@ $api->version(
 
 
             /**
-             * Fund Wallet Route
+             *  Wallet Route
+             */
+            $api->group(['middleware' => [
+                'min_max_deposit',
+            ]], function ($api) {
+                $api->post('fund_wallet', [
+                    'as' => 'wallet.fund',
+                    'uses' => 'FundWalletController@fund',
+                ]);
+            });
+
+
+
+            $api->group(['middleware' => [
+                'min_balance',
+                'min_max_withdraw',
+            ]], function ($api) {
+                $api->post('wallet_withdraw', [
+                    'as' => 'wallet.withdraw',
+                    'uses' => 'WithdrawController@withdraw',
+                ]);
+            });
+
+            $api->get('wallet_self', [
+                'as' => 'wallet.self',
+                'uses' => 'FundWalletController@findSelf',
+            ]);
+
+            $api->get('wallet/{id}', [
+                'as' => 'wallet.find',
+                'uses' => 'FundWalletController@find',
+            ]);
+
+            $api->get('wallet', [
+                'as' => 'wallet.findAll',
+                'uses' => 'FundWalletController@findAll',
+            ]);
+
+
+            /**
+             * Game Session Route
              */
 
-            $api->post('fund_wallet', [
-                'as' => 'wallet.fund',
-                'uses' => 'FundWalletController@fund',
+            $api->get('game_session', [
+                'as' => 'session.findAll',
+                'uses' => 'GameSessionController@findAll',
             ]);
+
+            $api->get('game_session/{id}', [
+                'as' => 'session.find',
+                'uses' => 'GameSessionController@find',
+            ]);
+
+            $api->get('game_session_active', [
+                'as' => 'session.findAll',
+                'uses' => 'GameSessionController@findAllActive',
+            ]);
+
+
+
+            /**
+             * Draw Winners Route
+             */
+
+            $api->get('draw_winners', [
+                'as' => 'draw.findAll',
+                'uses' => 'DrawWinnersController@findAll',
+            ]);
+
+            $api->get('draw_winners/{id}', [
+                'as' => 'draw.findBySession',
+                'uses' => 'DrawWinnersController@findBySession',
+            ]);
+
 
             /**
              * User Account Details / Bank Account Route
@@ -167,6 +234,11 @@ $api->version(
             $api->get('bank_account', [
                 'as' => 'bank_account.findAll',
                 'uses' => 'UserAccountDetailController@findAll',
+            ]);
+
+            $api->get('bank_account_self', [
+                'as' => 'bank_account.findAllSelf',
+                'uses' => 'UserAccountDetailController@findAllByOwner',
             ]);
 
             $api->get('bank_account/{id}', [

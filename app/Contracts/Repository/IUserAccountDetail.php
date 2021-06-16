@@ -14,4 +14,5 @@ interface IUserAccountDetail extends IRepository
      * @throws RepositoryException
      */
     public function create(CreateUserAccountDetailDTO $attributes);
+    public function findAllByOwner(int $userID);
 }

@@ -2,30 +2,13 @@
 
 namespace App\Services;
 
-use App\Contracts\Repository\IGameSession;
-use App\Contracts\Repository\IPackageOptions;
-use App\Contracts\Repository\IPackages;
-use App\Contracts\Repository\IPayment;
 use App\Contracts\Repository\IPaymentProviders;
-use App\Contracts\Repository\ITicket;
-use App\Contracts\Repository\IUser;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletCreditLog;
-use App\Contracts\Repository\IWalletDebitLog;
-use App\Contracts\Services\IBuyTicketService;
 use App\Contracts\Services\IFundWalletService;
-use App\DTOs\CreateGameSessionDTO;
-use App\DTOs\CreatePackageDTO;
-use App\DTOs\CreatePaymentDTO;
-use App\DTOs\CreateTicketDTO;
-use App\DTOs\CreateWalletDebitDTO;
 use App\DTOs\FundWalletDTO;
-use App\DTOs\UpdatePackageDTO;
-use App\Plugins\PUGXShortId\Shortid;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 
@@ -49,6 +32,31 @@ class FundWalletService extends BaseService implements IFundWalletService
         $this->request = $request;
 
         $this->user =  $this->request->user('api');
+    }
+
+    public function find($id)
+    {
+        $result = $this->walletRepo->find($id);
+        if ($result) {
+            $response_message = $this->customHttpResponse(200, 'Success.', $result);
+            return $response_message;
+        }
+        $response_message = $this->customHttpResponse(400, 'Record does not exist.', $result);
+        return $response_message;
+    }
+
+    public function findAll()
+    {
+        $result = $this->walletRepo->findAll();
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
+
+    public function findSelf()
+    {
+        $result = $this->walletRepo->findByUserID($this->user->id);
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
     }
 
 
@@ -101,6 +109,7 @@ class FundWalletService extends BaseService implements IFundWalletService
             $e = $this->walletRepo->creditWallet($walletID, $tnxData->amount);
 
             $tnxData->wallet_id = $walletInternalID;
+            $tnxData->activity_type_id = 12; //where 12 = Fund Wallet (Deposit) activity type.
             $tnxData->payment_provider_id = $paymentProvider->getOriginal('id');
             $data = $this->walletCreditLogRepo->create($tnxData);
 
