@@ -83,7 +83,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $this->package_option_id = $this->request->package_option_id;
         $this->user = $this->request->user('api');
 
-        return $this->buyTicket();
+        return $this->buyTicket($this->request->package_option_id, $this->user->id);
     }
 
 
@@ -227,7 +227,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
 
 
-    public function buyTicket()
+    public function buyTicket(string $packageOptionID, int $userID, int $routineID = null)
     {
 
         /**
@@ -237,14 +237,14 @@ class BuyTicketService extends BaseService implements IBuyTicketService
          * 4. generate ticket
          */
 
-        $packagePricing = $this->packageOptionRepo->find($this->package_option_id);
+        $packagePricing = $this->packageOptionRepo->find($packageOptionID);
 
         if (!$packagePricing) {
             $response_message = $this->customHttpResponse(400, 'The package option you choose does not exist');
             return $response_message;
         }
 
-        $sufficientWallet = $this->walletRepo->hasSufficientBalance($this->user->id, $packagePricing->price);
+        $sufficientWallet = $this->walletRepo->hasSufficientBalance($userID, $packagePricing->price);
         if (!$sufficientWallet) {
             $response_message = $this->customHttpResponse(400, 'Insufficient balance');
             return $response_message;
@@ -263,7 +263,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
             $data = [
                 'package_id' => $packageInternalID,
-                'initiated_by' => $this->user->id,
+                'initiated_by' => $userID,
                 'period' => $daysBeforeDraw,
                 'closes_at' => $packageClosingTime,
                 'expected_winners' => $package->expected_winners,
@@ -293,7 +293,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
 
             $ticketData = [
-                'user_id' => $this->user->id,
+                'user_id' => $userID,
                 'wallet_id' => $walletInternalID,
                 'amount' => $packagePrice,
                 'activity_type_id' => 2, //where 2 = "game play" - references the sys_activity_type db table.
@@ -302,6 +302,8 @@ class BuyTicketService extends BaseService implements IBuyTicketService
                 'package_id' => $packageInternalID,
                 'ticket_qty' => $packagePricing->ticket_qty,
                 'is_bulk' => $packagePricing->ticket_qty > 1 ? 1 : null,
+                'routine_id' => $routineID,
+                'is_auto_gen' => !is_null($routineID) ? 1 : null,
             ];
 
 
