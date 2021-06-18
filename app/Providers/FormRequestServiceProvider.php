@@ -6,6 +6,7 @@ use App\Contracts\FormRequest\IBuyTicketRequest;
 use App\Contracts\FormRequest\ICreatePackageOptionsRequest;
 use App\Contracts\FormRequest\ICreatePackageRequest;
 use App\Contracts\FormRequest\ICreatePrizeRequest;
+use App\Contracts\FormRequest\ICreateRoutineRequest;
 use App\Contracts\FormRequest\ICreateUserAccountDetailRequest;
 use App\Contracts\FormRequest\IDrawTicketRequest;
 use App\Contracts\FormRequest\IFundWalletRequest;
@@ -21,6 +22,7 @@ use App\Http\Request\BuyTicketRequest;
 use App\Http\Request\CreatePackageOptionsRequest;
 use App\Http\Request\CreatePackageRequest;
 use App\Http\Request\CreatePrizeRequest;
+use App\Http\Request\CreateRoutineRequest;
 use App\Http\Request\CreateUserAccountDetailRequest;
 use App\Http\Request\DrawTicketRequest;
 use App\Http\Request\FundWalletRequest;
@@ -60,5 +62,6 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IShuffleTicketRequest::class, ShuffleTicketRequest::class);
         $this->app->bind(IDrawTicketRequest::class, DrawTicketRequest::class);
         $this->app->bind(IWithdrawRequest::class, WithdrawRequest::class);
+        $this->app->bind(ICreateRoutineRequest::class, CreateRoutineRequest::class);
     }
 }

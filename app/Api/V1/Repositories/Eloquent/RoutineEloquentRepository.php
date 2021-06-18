@@ -2,71 +2,59 @@
 
 namespace App\Api\V1\Repositories\Eloquent;
 
-use App\Api\V1\Models\Routine;
+use App\Api\V1\Models\RoutineModel;
 use App\Api\V1\Repositories\EloquentRepository;
 use App\Contracts\Repository\IRoutine;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class RoutineEloquentRepository extends  EloquentRepository implements IRoutine
 {
 
-    public $adsVisit;
-    public function __construct(Routine $adsVisit)
+    public $routineModel;
+    public function __construct(RoutineModel $routineModel)
     {
         parent::__construct();
-        $this->adsVisit =  $adsVisit;
+        $this->routineModel =  $routineModel;
     }
 
     public function model()
     {
-        return Routine::class;
+        return RoutineModel::class;
     }
 
-    public function findAllDetailed()
+    public function create($details)
     {
-        $res = $this->adsVisit->from('ads_visit as a')
-            ->select(
-                'a.uuid',
-                'u.uuid as visitor_id',
-                'u.username as visitor_username',
-                'a.created_at',
-                'a.updated_at',
-                'a.deleted_at',
-                'a.visibility'
-            )
-            ->leftJoin('user as u', 'a.visitor_id', 'u.id')
-            ->get();
+        //convert POPO to array for the create() quick wrapper below
+        $details =  json_decode(json_encode($details), true);
+        $res = $this->routineModel->create($details);
 
         return $res;
     }
 
-    public function findOneDetailed($id)
+    public function findOneByUserID(int $userID, string $routineID)
     {
-        $res = $this->adsVisit->from('ads_visit as a')
-            ->select(
-                'a.uuid',
-                'u.uuid as visitor_id',
-                'u.username as visitor_username',
-                'a.created_at',
-                'a.updated_at',
-                'a.deleted_at',
-                'a.visibility'
-            )
-            ->leftJoin('user as u', 'a.visitor_id', 'u.id')
-            ->where("a.uuid", '=', $id)
+        $res = $this->routineModel
+            ->where('user_id', $userID)
+            ->where('uuid', $routineID)
             ->first();
-
         return $res;
     }
 
-    public function createAdVisit($detail)
-    {
-        $newEntity = new Routine();
-        $newEntity->uuid = $detail['uuid'];
-        $newEntity->ad_id = $detail['ad_id'];
-        $newEntity->visitor_id = $detail['visitor_id'];
-        $newEntity->save();
 
-        return $newEntity->id;
+    public function findAllByUserID(int $userID)
+    {
+        $res = $this->routineModel
+            ->where('user_id', $userID)
+            ->get();
+        return $res;
+    }
+
+
+    public function disable($id)
+    {
+        return $this->routineModel->where('uuid', $id)
+            ->update([
+                'disabled_at' => Carbon::now(),
+            ]);
     }
 }

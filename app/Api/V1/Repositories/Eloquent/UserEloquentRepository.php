@@ -29,7 +29,19 @@ class UserEloquentRepository extends  EloquentRepository implements IUser
     public function showByUsername(string $username)
     {
         $res = $this->user->from('user as a')
-            ->select('a.id', 'a.username', 'a.password', 'a.surname', 'a.firstname', 'a.phone', 'a.email', 'a.avatar', 'c.stub as role')
+            ->select(
+                'a.id',
+                'a.username',
+                'a.password',
+                'a.surname',
+                'a.firstname',
+                'a.phone',
+                'a.email',
+                'a.verified_email_at',
+                'a.verified_email_expire_at',
+                'a.avatar',
+                'c.stub as role'
+            )
             ->leftJoin('user_role as c', 'a.role', 'c.id')
             ->where("a.username", '=', $username)
             ->withTrashed()

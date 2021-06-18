@@ -4,12 +4,15 @@ namespace App\Services;
 
 use App\Contracts\Repository\IOAuth;
 use App\Contracts\Repository\IUser;
+use App\Contracts\Repository\IUserVerification;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Services\IUserService;
 use App\DTOs\CreateUserDTO;
+use App\DTOs\CreateUserVerificationDTO;
 use App\DTOs\CreateWalletDTO;
 use App\DTOs\OAuthDTO;
 use App\DTOs\UpdateUserDTO;
+use App\Plugins\PUGXShortId\Shortid;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,15 +24,17 @@ class UserService extends BaseService implements IUserService
 {
 
     private $userRepo;
+    private $userVerifyRepo;
     private $oauthRepo;
     private $walletRepo;
     private $password;
     private $request;
     private $payload;
 
-    public function __construct(IUser $userRepo, Request $request, IWallet $walletRepo, IOAuth $oauthRepo)
+    public function __construct(IUser $userRepo, Request $request, IWallet $walletRepo, IOAuth $oauthRepo, IUserVerification $userVerifyRepo)
     {
         $this->userRepo = $userRepo;
+        $this->userVerifyRepo = $userVerifyRepo;
         $this->oauthRepo = $oauthRepo;
         $this->walletRepo = $walletRepo;
         $this->request = $request;
@@ -78,6 +83,12 @@ class UserService extends BaseService implements IUserService
     {
         return $this->userRepo->find($id);
     }
+
+    public function generateCode()
+    {
+        return  Shortid::generate(30, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZAQ");
+    }
+
 
     public function generatePassword($plainPassword)
     {
@@ -129,6 +140,9 @@ class UserService extends BaseService implements IUserService
 
                 $createUserInputData = CreateUserDTO::fromRequest($this->payload);
                 $regData = $this->userRepo->create($createUserInputData);
+
+                $createUserVerifyInputData = CreateUserVerificationDTO::fromRequest(['user_id' => $regData->id, 'code' => $this->generateCode()]);
+                $this->userVerifyRepo->create($createUserVerifyInputData);
 
                 $this->payload['user_id'] = $regData->id;
                 $createOAuthInputData = OAuthDTO::fromRequest($this->payload);

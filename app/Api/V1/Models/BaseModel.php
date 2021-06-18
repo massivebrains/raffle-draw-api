@@ -28,5 +28,6 @@ class BaseModel extends Model
         'drawn_by',
         'ticket_id',
         'owner_id',
+        'frequency_id',
     ];
 }
