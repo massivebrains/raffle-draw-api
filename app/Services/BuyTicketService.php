@@ -13,6 +13,7 @@ use App\Contracts\Repository\IUser;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletDebitLog;
 use App\Contracts\Services\IBuyTicketService;
+use App\Contracts\Services\IEmailService;
 use App\DTOs\CreateGameSessionDTO;
 use App\DTOs\CreatePaymentDTO;
 use App\DTOs\CreateTicketDTO;
@@ -21,6 +22,8 @@ use App\DTOs\DrawTicketDTO;
 use App\DTOs\DrawWinnersDTO;
 use App\DTOs\ShuffleTicketDTO;
 use App\DTOs\UpdateDrawDTO;
+use App\MailTemplate\NewTicketTemplate;
+use App\MailTemplate\WinningTicketTemplate;
 use App\Plugins\PUGXShortId\Shortid;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,6 +50,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
     private $ticketRepo;
     private $systemRepo;
     private $drawWinnerRepo;
+    private $EmailService;
 
     public function __construct(
         IUser $userRepo,
@@ -56,6 +60,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         IWalletDebitLog $walletDebitLogRepo,
         IPackageOptions $packageOptionRepo,
         IGameSession $gameSessionRepo,
+        IEmailService $EmailService,
         IPayment $paymentRepo,
         ITicket $ticketRepo,
         ISysSettingsRepository $systemRepo,
@@ -71,6 +76,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $this->ticketRepo = $ticketRepo;
         $this->systemRepo = $systemRepo;
         $this->drawWinnerRepo = $drawWinnerRepo;
+        $this->EmailService = $EmailService;
         $this->request = $request;
 
         $this->user = $this->request->user('api');
@@ -105,6 +111,22 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         return  $drawIndexArr;
     }
 
+
+    public function messageAllWinners(Collection $drawnResult, $sessionID)
+    {
+        foreach ($drawnResult as $ticket) {
+
+            //send Mails
+            $detail = [
+                'name' => $ticket->user->username,
+                'email' => $ticket->user->email,
+                'ticket' =>  $ticket->ticket_short_code,
+                'session_id' => $sessionID
+            ];
+            $htmlMail = WinningTicketTemplate::getHtml($detail);
+            $this->EmailService->sendMail($detail['email'], 'Congratulations! :: Ticket Picked.', $htmlMail);
+        }
+    }
 
     public function getWinningTicketsdetailed(Collection $drawnResult): array
     {
@@ -172,6 +194,8 @@ class BuyTicketService extends BaseService implements IBuyTicketService
 
 
                 $this->drawWinnerRepo->create($winningTicketDetailedArr);
+
+                $this->messageAllWinners($drawnResult, $sessionID);
             }
 
             DB::commit();
@@ -273,11 +297,12 @@ class BuyTicketService extends BaseService implements IBuyTicketService
             $createSessionInput = CreateGameSessionDTO::fromRequest($data);
             $newSession = $this->gameSessionRepo->create($createSessionInput);
 
-            $activeSessionID = $newSession->id;
+            $activeSession = $newSession;
         } else {
-            $activeSessionID = $getActiveSession->id;
+            $activeSession = $getActiveSession;
         }
 
+        $activeSessionID = $activeSession->id;
 
         //3. debit user - this part will be wrapped in a transaction.
 
@@ -341,6 +366,17 @@ class BuyTicketService extends BaseService implements IBuyTicketService
             }
 
             $this->packageOptionRepo->updateSells($packagePricing->uuid);
+
+
+            //send Mails
+            $detail = [
+                'name' => $this->user->username,
+                'tickets' =>  $generatedTicketsArr['tickets'],
+                'price' => $packagePrice,
+                'session_id' => $activeSession->uuid
+            ];
+            $htmlMail = NewTicketTemplate::getHtml($detail);
+            $this->EmailService->sendMail($this->user->email, 'Payment Successful :: Tickets generated.', $htmlMail);
 
             DB::commit();
 

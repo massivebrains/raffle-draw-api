@@ -6,12 +6,14 @@ use App\Contracts\Repository\IOAuth;
 use App\Contracts\Repository\IUser;
 use App\Contracts\Repository\IUserVerification;
 use App\Contracts\Repository\IWallet;
+use App\Contracts\Services\IEmailService;
 use App\Contracts\Services\IUserService;
 use App\DTOs\CreateUserDTO;
 use App\DTOs\CreateUserVerificationDTO;
 use App\DTOs\CreateWalletDTO;
 use App\DTOs\OAuthDTO;
 use App\DTOs\UpdateUserDTO;
+use App\MailTemplate\RegistrationTemplate;
 use App\Plugins\PUGXShortId\Shortid;
 use Exception;
 use Illuminate\Http\Request;
@@ -30,13 +32,21 @@ class UserService extends BaseService implements IUserService
     private $password;
     private $request;
     private $payload;
+    private $EmailService;
 
-    public function __construct(IUser $userRepo, Request $request, IWallet $walletRepo, IOAuth $oauthRepo, IUserVerification $userVerifyRepo)
-    {
+    public function __construct(
+        IUser $userRepo,
+        Request $request,
+        IWallet $walletRepo,
+        IOAuth $oauthRepo,
+        IUserVerification $userVerifyRepo,
+        IEmailService $EmailService
+    ) {
         $this->userRepo = $userRepo;
         $this->userVerifyRepo = $userVerifyRepo;
         $this->oauthRepo = $oauthRepo;
         $this->walletRepo = $walletRepo;
+        $this->EmailService = $EmailService;
         $this->request = $request;
     }
 
@@ -137,11 +147,12 @@ class UserService extends BaseService implements IUserService
 
             DB::beginTransaction();
             try {
+                $code = $this->generateCode();
 
                 $createUserInputData = CreateUserDTO::fromRequest($this->payload);
                 $regData = $this->userRepo->create($createUserInputData);
 
-                $createUserVerifyInputData = CreateUserVerificationDTO::fromRequest(['user_id' => $regData->id, 'code' => $this->generateCode()]);
+                $createUserVerifyInputData = CreateUserVerificationDTO::fromRequest(['user_id' => $regData->id, 'code' => $code]);
                 $this->userVerifyRepo->create($createUserVerifyInputData);
 
                 $this->payload['user_id'] = $regData->id;
@@ -150,6 +161,11 @@ class UserService extends BaseService implements IUserService
 
                 $createWalletInputData = CreateWalletDTO::fromRequest(['user_id' => $regData->id]);
                 $walletData = $this->walletRepo->create($createWalletInputData);
+
+                //send Mails
+                $detail = ['name' => $this->request->username, 'company' => 'Land Lotto', 'verify_code' => $code];
+                $htmlMail = RegistrationTemplate::getHtml($detail);
+                $this->EmailService->sendMail($this->request->email, 'Welcome :: Activation Required.', $htmlMail);
 
                 DB::commit();
 

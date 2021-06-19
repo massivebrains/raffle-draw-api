@@ -117,6 +117,9 @@ $api->version(
                 'uses' => 'BuyTicketController@create',
             ]);
 
+
+
+
             /**
              * Subscription Route
              */
@@ -352,6 +355,26 @@ $api->version(
             ]);
         });
 
+        /**
+         * Verification Route
+         */
+
+        $api->post('resend_verify_code', [
+            'as' => 'verify.resend',
+            'uses' => 'VerificationController@resendEmail',
+        ]);
+
+
+        $api->post('email_verify_code/{code}', [
+            'as' => 'verify.verify',
+            'uses' => 'VerificationController@verifyEmail',
+        ]);
+
+
+        $api->get('view/reg', [
+            'as' => 'view.reg',
+            'uses' => 'MailViewController@reg',
+        ]);
 
         /**
          * Auth route

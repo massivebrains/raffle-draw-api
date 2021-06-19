@@ -17,6 +17,7 @@ use App\Contracts\FormRequest\IUpdatePackageRequest;
 use App\Contracts\FormRequest\IUpdateUserRequest;
 use App\Contracts\FormRequest\IUserLoginRequest;
 use App\Contracts\FormRequest\IUserRegisterRequest;
+use App\Contracts\FormRequest\IVerificationRequest;
 use App\Contracts\FormRequest\IWithdrawRequest;
 use App\Http\Request\BuyTicketRequest;
 use App\Http\Request\CreatePackageOptionsRequest;
@@ -33,6 +34,7 @@ use App\Http\Request\UpdatePackageRequest;
 use App\Http\Request\UpdateUserRequest;
 use App\Http\Request\UserLoginRequest;
 use App\Http\Request\UserRegisterRequest;
+use App\Http\Request\VerificationRequest;
 use App\Http\Request\WithdrawRequest;
 use Illuminate\Support\ServiceProvider;
 
@@ -63,5 +65,6 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IDrawTicketRequest::class, DrawTicketRequest::class);
         $this->app->bind(IWithdrawRequest::class, WithdrawRequest::class);
         $this->app->bind(ICreateRoutineRequest::class, CreateRoutineRequest::class);
+        $this->app->bind(IVerificationRequest::class, VerificationRequest::class);
     }
 }

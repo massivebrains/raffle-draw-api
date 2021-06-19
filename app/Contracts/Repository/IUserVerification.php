@@ -13,4 +13,10 @@ interface IUserVerification
      * @throws RepositoryException
      */
     public function create(CreateUserVerificationDTO $attributes);
+
+    public function disableAllActiveUnused(int $userID);
+
+    public function validCode(string $code);
+
+    public function markUsed(string $code, int $userID);
 }
