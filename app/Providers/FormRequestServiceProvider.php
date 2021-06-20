@@ -66,5 +66,6 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IWithdrawRequest::class, WithdrawRequest::class);
         $this->app->bind(ICreateRoutineRequest::class, CreateRoutineRequest::class);
         $this->app->bind(IVerificationRequest::class, VerificationRequest::class);
+
     }
 }
