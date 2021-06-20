@@ -11,6 +11,7 @@ use App\Api\V1\Repositories\Eloquent\PackagesEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\PaymentEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\PaymentProvidersEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\RoutineEloquentRepository;
+use App\Api\V1\Repositories\Eloquent\RoutineFrequencyEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\SysActivityTypesEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\SysCommChannelEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\SysPrizeEloquentRepository;
@@ -34,6 +35,7 @@ use App\Contracts\Repository\IPackages;
 use App\Contracts\Repository\IPayment;
 use App\Contracts\Repository\IPaymentProviders;
 use App\Contracts\Repository\IRoutine;
+use App\Contracts\Repository\IRoutineFrequencyRepo;
 use App\Contracts\Repository\ISysActivityTypesRepository;
 use App\Contracts\Repository\ISysCommChannels;
 use App\Contracts\Repository\ISysPrize;
@@ -43,6 +45,7 @@ use App\Contracts\Repository\IUser;
 use App\Contracts\Repository\IUserAccountDetail;
 use App\Contracts\Repository\IUserActivityLog;
 use App\Contracts\Repository\IUserRoleRepository;
+use App\Contracts\Repository\IUserVerification;
 use App\Contracts\Repository\IUserVerificationRepository;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletCreditLog;
@@ -66,7 +69,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ISysActivityTypesRepository::class, SysActivityTypesEloquentRepository::class);
         $this->app->bind(ISysSettingsRepository::class, SysSettingsEloquentRepository::class);
         $this->app->bind(IUserRoleRepository::class, UserRoleEloquentRepository::class);
-        $this->app->bind(IUserVerificationRepository::class, UserVerificationEloquentRepository::class);
+        // $this->app->bind(IUserVerificationRepository::class, UserVerificationEloquentRepository::class);
         $this->app->bind(IBanks::class, BanksEloquentRepository::class);
         $this->app->bind(IDrawWinner::class, DrawWinnersEloquentRepository::class);
         $this->app->bind(IGameSession::class, GameSessionEloquentRepository::class);
@@ -75,6 +78,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IPayment::class, PaymentEloquentRepository::class);
         $this->app->bind(IPaymentProviders::class, PaymentProvidersEloquentRepository::class);
         $this->app->bind(IRoutine::class, RoutineEloquentRepository::class);
+        $this->app->bind(IRoutineFrequencyRepo::class, RoutineFrequencyEloquentRepository::class);
         $this->app->bind(ISysCommChannels::class, SysCommChannelEloquentRepository::class);
         $this->app->bind(ISysPrize::class, SysPrizeEloquentRepository::class);
         $this->app->bind(ITicket::class, TicketEloquentRepository::class);
@@ -84,5 +88,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IWalletDebitLog::class, WalletDebitLogEloquentRepository::class);
         $this->app->bind(IWalletCreditLog::class, WalletCreditLogEloquentRepository::class);
         $this->app->bind(IWithdrawalRepository::class, WithdrawalEloquentRepository::class);
+        $this->app->bind(IUserVerification::class, UserVerificationEloquentRepository::class);
     }
 }

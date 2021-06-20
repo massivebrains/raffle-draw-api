@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'prewin@prewin.com.ng', 'name' => 'Prewin'],
+    'from' => ['address' => 'mail@landlotto.com', 'name' => 'Land Lotto'],
 
     /*
     |--------------------------------------------------------------------------

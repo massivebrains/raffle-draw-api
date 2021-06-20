@@ -2,11 +2,23 @@
 
 namespace App\Console;
 
+use App\Api\V1\Repositories\Eloquent\CronRepository;
+use App\Jobs\ExampleJob;
+use App\Jobs\RoutineJob;
 use Illuminate\Console\Scheduling\Schedule;
+use Laravel\Lumen\Application;
+use Illuminate\Contracts\Foundation\Application as FoundationApplication;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    // public $cronRepo;
+
+    // public function __construct(CronRepository $cronRepo)
+    // {
+    //     $this->cronRepo = $cronRepo;
+    // }
     /**
      * The Artisan commands provided by your application.
      *
@@ -14,6 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+
     ];
 
     /**
@@ -25,5 +38,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //
+        $schedule->job(new RoutineJob)->everyMinute();
     }
 }

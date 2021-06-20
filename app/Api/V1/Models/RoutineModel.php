@@ -3,7 +3,7 @@
 namespace  App\Api\V1\Models;
 
 
-class Routine extends BaseModel
+class RoutineModel extends BaseModel
 {
     protected $table = "routine";
 }

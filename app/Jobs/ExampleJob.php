@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Api\V1\Repositories\Eloquent\CronRepository;
+
 class ExampleJob extends Job
 {
     /**
@@ -19,8 +21,9 @@ class ExampleJob extends Job
      *
      * @return void
      */
-    public function handle()
+    public function handle(CronRepository $cronRepo)
     {
         //
+        $cronRepo->create(['val' => "from a job"]);
     }
 }

@@ -25,7 +25,7 @@
 					"formdata": [
 						{
 							"key": "acc_no",
-							"value": "0053006315",
+							"value": "0242373314",
 							"type": "text"
 						},
 						{
@@ -42,6 +42,75 @@
 					],
 					"path": [
 						"verify_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email Verification - Resend Code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "nelsonsmrt@gma.ffaatd",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/resend_verify_code",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"resend_verify_code"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Email Verification - Verify",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}/email_verify_code/dty9ANmiCRaK17euGXqyGs1LNNwCD9",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"email_verify_code",
+						"dty9ANmiCRaK17euGXqyGs1LNNwCD9"
 					]
 				}
 			},
@@ -218,12 +287,12 @@
 					"formdata": [
 						{
 							"key": "username",
-							"value": "udofaa",
+							"value": "nwamuo",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "jakata",
+							"value": "testing",
 							"type": "text"
 						}
 					]
@@ -267,22 +336,22 @@
 					"formdata": [
 						{
 							"key": "username",
-							"value": "udofaat",
+							"value": "Osuofia",
 							"type": "text"
 						},
 						{
 							"key": "firstname",
-							"value": "Ezugom",
+							"value": "Ndu",
 							"type": "text"
 						},
 						{
 							"key": "email",
-							"value": "nelsonsmrt@gma.ffaat",
+							"value": "conja@gma.ffaatds",
 							"type": "text"
 						},
 						{
 							"key": "surname",
-							"value": "Okpara",
+							"value": "Mpa king",
 							"type": "text"
 						},
 						{
@@ -845,7 +914,7 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "package_option_id",
+							"key": "package_id",
 							"value": "ddfafb9704b149a7861394a682965b93",
 							"type": "text"
 						},
@@ -948,7 +1017,7 @@
 			"response": []
 		},
 		{
-			"name": "Buy Ticket - Create",
+			"name": "Ticket - Buy",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -985,7 +1054,468 @@
 			"response": []
 		},
 		{
-			"name": "Fund Wallet",
+			"name": "Ticket Pool - Shuffle",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "session_id",
+							"value": "9634b14ce37a462193063e93e46babf6",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/shuffle_ticket",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"shuffle_ticket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ticket Pool - Pick / Draw",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "session_id",
+							"value": "9634b14ce37a462193063e93e46babf6",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/draw_ticket",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"draw_ticket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Game Session - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/game_session",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"game_session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Game Session(ACTIVE ONLY) - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/game_session_active",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"game_session_active"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Game Session - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/game_session/a3f87ee2ba994e30ab6540927dc0fa58",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"game_session",
+						"a3f87ee2ba994e30ab6540927dc0fa58"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Winning Tickets - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/draw_winners",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"draw_winners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Winning Tickets (By SESSION)- Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/draw_winners/a3f87ee2ba994e30ab6540927dc0fa58",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"draw_winners",
+						"a3f87ee2ba994e30ab6540927dc0fa58"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wallet - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wallet - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallet/5cdf4bc2f5db4d2097389e5e2a197b09",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallet",
+						"5cdf4bc2f5db4d2097389e5e2a197b09"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wallet (SELF) - Get  All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallet_self",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallet_self"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fund Wallet (Deposit)",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -1027,6 +1557,347 @@
 					],
 					"path": [
 						"fund_wallet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wallet Withdraw (Cashout)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "amount",
+							"value": "3500",
+							"type": "text"
+						},
+						{
+							"key": "user_bank_acc_id",
+							"value": "13rerqerwef",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallet_withdraw",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallet_withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription Frequency - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/subscription_freq",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subscription_freq"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription (SELF) - Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/subscription",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subscription"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription (SELF) - Get One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/subscription/xaa",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subscription",
+						"xaa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription - Create",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "package_option_id",
+							"value": "5a49dfea0c0746e1854a066c084ab932",
+							"type": "text"
+						},
+						{
+							"key": "frequency_id",
+							"value": "343j42343434324bjwffsd",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/subscription",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subscription"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription - Disable",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/subscription/xaa",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subscription",
+						"xaa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscription - Remove",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/subscription/20272f2ae98846ff8bcc6b00833eb07d",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"subscription",
+						"20272f2ae98846ff8bcc6b00833eb07d"
 					]
 				}
 			},
@@ -1246,17 +2117,17 @@
 					"formdata": [
 						{
 							"key": "user_id",
-							"value": "be71e6db4af011eb81e1024237d544ad",
+							"value": "f71aec1623124db6912dba94580ffd2f",
 							"type": "text"
 						},
 						{
 							"key": "acc_name",
-							"value": "Chukwuezugo Okpara",
+							"value": "Obinna Nwamuo",
 							"type": "text"
 						},
 						{
 							"key": "acc_no",
-							"value": "2938849399",
+							"value": "0242373314",
 							"type": "text"
 						},
 						{
@@ -1358,6 +2229,54 @@
 					],
 					"path": [
 						"bank_account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Bank Account (SELF)- Get All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/bank_account_self",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"bank_account_self"
 					]
 				}
 			},

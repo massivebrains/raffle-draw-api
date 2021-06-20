@@ -119,6 +119,45 @@ $api->version(
 
 
 
+
+            /**
+             * Subscription Route
+             */
+
+            $api->get('subscription_freq', [
+                'as' => 'subscribe.freq',
+                'uses' => 'RoutineFrequencyController@findAll',
+            ]);
+
+            $api->get('subscription', [
+                'as' => 'subscribe.findAll',
+                'uses' => 'RoutineController@findAll',
+            ]);
+
+            $api->get('subscription/{id}', [
+                'as' => 'subscribe.find',
+                'uses' => 'RoutineController@find',
+            ]);
+
+            $api->post('subscription', [
+                'as' => 'subscribe.create',
+                'uses' => 'RoutineController@create',
+            ]);
+
+            $api->delete('subscription/{id}', [
+                'as' => 'subscribe.delete',
+                'uses' => 'RoutineController@delete',
+            ]);
+
+            $api->put('subscription/{id}', [
+                'as' => 'subscribe.disable',
+                'uses' => 'RoutineController@disable',
+            ]);
+
+
+            /**
+             * Shuffle / Draw Ticket Route
+             */
             $api->group(['middleware' => [
                 'check_winner_complete',
             ]], function ($api) {
@@ -316,6 +355,26 @@ $api->version(
             ]);
         });
 
+        /**
+         * Verification Route
+         */
+
+        $api->post('resend_verify_code', [
+            'as' => 'verify.resend',
+            'uses' => 'VerificationController@resendEmail',
+        ]);
+
+
+        $api->get('email_verify_code/{code}', [
+            'as' => 'verify.verify',
+            'uses' => 'VerificationController@verifyEmail',
+        ]);
+
+
+        $api->get('view/reg', [
+            'as' => 'view.reg',
+            'uses' => 'MailViewController@reg',
+        ]);
 
         /**
          * Auth route
