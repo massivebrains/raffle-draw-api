@@ -9,16 +9,16 @@ Raffle Draw RESTFUL api project built with Laravel/Lumen microservice. Started a
 
 ## Features:
 - Ticket Management - Purchase, track,etc
-- Ticket Pool Shuffling - Only tickets within a given session/ campeign.
-- Ticket Drawing - Randomly select/pick winners from the pool (per session / campeign).
+- Ticket Pool Shuffling - Only tickets within a given session/ campaign.
+- Ticket Drawing - Randomly select/pick winners from the pool (per session / campaign).
 - Multi and Single Ticket Drawing - pick only one single winner per draw or multi select.
 - Force Re-shuffle -  After each draw, prevent further draw until the pool is re-shuffled for integrity purposes.
-- Multi/Parallel Campeigns/Games - Run multiple campeigns in parallel through the session feature.
+- Multi/Parallel Campaigns/Games - Run multiple campaigns in parallel through the session feature.
 - Wallet system - Fund wallet, Withdraw, etc
 - Packages (sub packages, discounts, pricing, promo, etc)
 - Package Subscriptions / Auto - Ticket purchase placement  ( aka Routines or scheduler or cron jobs).
 - Bank Account management - for withdrawals(cashout), stack different account details of choice.
-- Prize Management - Assign / Map different prizes to different packages in different sessions/ campeigns. e.g : $200, $1000, Landed property, real estate, etc.
+- Prize Management - Assign / Map different prizes to different packages in different sessions/ campaigns. e.g : $200, $1000, Landed property, real estate, etc.
 - User Management - Sign in / out, email verification, edit profile, etc
 - Role Management
 - Messaging / Notifications - Auto mails sent on Ticket purchase, all winning tickets owners receive message on pick, on each routine run , subscribers are notified etc
