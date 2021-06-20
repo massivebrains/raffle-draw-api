@@ -5,6 +5,7 @@ namespace App\Contracts\Repository;
 use App\Contracts\IRepository;
 use App\DTOs\CreateUserDTO;
 use App\DTOs\UpdateUserDTO;
+use App\DTOs\UpdateUserEmailVerifyDTO;
 use App\Exceptions\RepositoryException;
 
 interface IUser extends IRepository
@@ -37,4 +38,8 @@ interface IUser extends IRepository
     public function nameByEmailExist(array $details);
 
     public function nameByUsernameExist(array $details);
+
+    public function verifyEmail(int $userID, UpdateUserEmailVerifyDTO $details);
+
+    public function getByEmail(string $email);
 }

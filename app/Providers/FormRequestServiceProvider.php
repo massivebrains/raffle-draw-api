@@ -6,6 +6,7 @@ use App\Contracts\FormRequest\IBuyTicketRequest;
 use App\Contracts\FormRequest\ICreatePackageOptionsRequest;
 use App\Contracts\FormRequest\ICreatePackageRequest;
 use App\Contracts\FormRequest\ICreatePrizeRequest;
+use App\Contracts\FormRequest\ICreateRoutineRequest;
 use App\Contracts\FormRequest\ICreateUserAccountDetailRequest;
 use App\Contracts\FormRequest\IDrawTicketRequest;
 use App\Contracts\FormRequest\IFundWalletRequest;
@@ -16,11 +17,13 @@ use App\Contracts\FormRequest\IUpdatePackageRequest;
 use App\Contracts\FormRequest\IUpdateUserRequest;
 use App\Contracts\FormRequest\IUserLoginRequest;
 use App\Contracts\FormRequest\IUserRegisterRequest;
+use App\Contracts\FormRequest\IVerificationRequest;
 use App\Contracts\FormRequest\IWithdrawRequest;
 use App\Http\Request\BuyTicketRequest;
 use App\Http\Request\CreatePackageOptionsRequest;
 use App\Http\Request\CreatePackageRequest;
 use App\Http\Request\CreatePrizeRequest;
+use App\Http\Request\CreateRoutineRequest;
 use App\Http\Request\CreateUserAccountDetailRequest;
 use App\Http\Request\DrawTicketRequest;
 use App\Http\Request\FundWalletRequest;
@@ -31,6 +34,7 @@ use App\Http\Request\UpdatePackageRequest;
 use App\Http\Request\UpdateUserRequest;
 use App\Http\Request\UserLoginRequest;
 use App\Http\Request\UserRegisterRequest;
+use App\Http\Request\VerificationRequest;
 use App\Http\Request\WithdrawRequest;
 use Illuminate\Support\ServiceProvider;
 
@@ -60,6 +64,8 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IShuffleTicketRequest::class, ShuffleTicketRequest::class);
         $this->app->bind(IDrawTicketRequest::class, DrawTicketRequest::class);
         $this->app->bind(IWithdrawRequest::class, WithdrawRequest::class);
+        $this->app->bind(ICreateRoutineRequest::class, CreateRoutineRequest::class);
+        $this->app->bind(IVerificationRequest::class, VerificationRequest::class);
 
     }
 }

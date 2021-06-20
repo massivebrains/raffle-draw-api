@@ -8,6 +8,7 @@ use App\Contracts\Repository\IUser;
 use App\Api\V1\Repositories\EloquentRepository;
 use App\DTOs\CreateUserDTO;
 use App\DTOs\UpdateUserDTO;
+use App\DTOs\UpdateUserEmailVerifyDTO;
 use App\Utils\Mapper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -26,10 +27,41 @@ class UserEloquentRepository extends  EloquentRepository implements IUser
         return User::class;
     }
 
+    public function verifyEmail(int $userID, UpdateUserEmailVerifyDTO $details)
+    {
+        //convert POPO to array for the create() quick wrapper below
+        $details =  json_decode(json_encode($details), true);
+
+        $res = $this->user
+            ->where('id', $userID)
+            ->update($details);
+        return $res;
+    }
+
+    public function getByEmail(string $email)
+    {
+        $res = $this->user
+            ->where('email', $email)
+            ->first();
+        return $res;
+    }
+
     public function showByUsername(string $username)
     {
         $res = $this->user->from('user as a')
-            ->select('a.id', 'a.username', 'a.password', 'a.surname', 'a.firstname', 'a.phone', 'a.email', 'a.avatar', 'c.stub as role')
+            ->select(
+                'a.id',
+                'a.username',
+                'a.password',
+                'a.surname',
+                'a.firstname',
+                'a.phone',
+                'a.email',
+                'a.verified_email_at',
+                'a.verified_email_expire_at',
+                'a.avatar',
+                'c.stub as role'
+            )
             ->leftJoin('user_role as c', 'a.role', 'c.id')
             ->where("a.username", '=', $username)
             ->withTrashed()

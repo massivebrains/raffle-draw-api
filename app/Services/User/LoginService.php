@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\Repository\IUser;
 use App\Contracts\Services\ILoginService;
 use App\Helper\UserScope;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -71,6 +72,26 @@ class LoginService extends BaseService implements ILoginService
             //password does not exist
             $response_message = $this->customHttpResponse(401, 'User does not Exist or details incorrect.');
             return $response_message;
+        }
+
+
+        if (is_null($this->user->verified_email_at)) {
+            $response_message = $this->customHttpResponse(401, 'Verification is required. Follow the link sent to your email to activate.');
+            return $response_message;
+        }
+
+        if (!is_null($this->user->verified_email_expire_at)) {
+
+
+
+            $now = Carbon::now();
+            $expires = Carbon::parse($this->user->verified_email_expire_at);
+            $timeRemaining = $now->diffInSeconds($expires, false);
+
+            if ($timeRemaining < 1) {
+                $response_message = $this->customHttpResponse(401, 'Re-verification is required.');
+                return $response_message;
+            }
         }
 
 

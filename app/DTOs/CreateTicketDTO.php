@@ -13,6 +13,8 @@ class CreateTicketDTO extends BaseDTO
     public string $ticket_short_code;
     public ?string $is_bulk;
     public string $payment_id;
+    public ?string $routine_id;
+    public ?string $is_auto_gen;
 
 
     public static function fromRequest(array $params)
@@ -26,6 +28,8 @@ class CreateTicketDTO extends BaseDTO
             'ticket_short_code' => $params['ticket_short_code'],
             'is_bulk' => $params['is_bulk'],
             'payment_id' => $params['payment_id'],
+            'routine_id' => $params['routine_id'],
+            'is_auto_gen' => $params['is_auto_gen'],
         ]);
     }
 }
