@@ -365,7 +365,7 @@ $api->version(
         ]);
 
 
-        $api->post('email_verify_code/{code}', [
+        $api->get('email_verify_code/{code}', [
             'as' => 'verify.verify',
             'uses' => 'VerificationController@verifyEmail',
         ]);
