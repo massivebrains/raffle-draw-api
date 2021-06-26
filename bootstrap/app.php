@@ -72,6 +72,7 @@ $app->routeMiddleware([
     'min_max_withdraw' => App\Http\Middleware\MinMaxWithdrawMiddleware::class,
     'min_max_deposit' => App\Http\Middleware\MinMaxDepositMiddleware::class,
 
+
 ]);
 
 /*
