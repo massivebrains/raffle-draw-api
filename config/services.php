@@ -35,5 +35,6 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
     'nuban_verify' => env('NUBAN_VERIFY', null),
+    'app_url' => env('APP_URL', null),
 
 ];
