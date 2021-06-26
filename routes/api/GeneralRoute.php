@@ -313,16 +313,7 @@ $api->version(
                 'uses' => 'PackageController@update',
             ]);
 
-            $api->get('package', [
-                'as' => 'package.findAll',
-                'uses' => 'PackageController@findAll',
-            ]);
-
-            $api->get('package/{id}', [
-                'as' => 'package.find',
-                'uses' => 'PackageController@find',
-            ]);
-
+          
 
             /**
              * Package Options Route
@@ -339,15 +330,6 @@ $api->version(
                 'uses' => 'PackageOptionsController@update',
             ]);
 
-            $api->get('package_options', [
-                'as' => 'package_options.findAll',
-                'uses' => 'PackageOptionsController@findAll',
-            ]);
-
-            $api->get('package_options/{id}', [
-                'as' => 'package_options.find',
-                'uses' => 'PackageOptionsController@find',
-            ]);
 
             $api->delete('package_options/{id}', [
                 'as' => 'package_options.delete',
@@ -387,6 +369,29 @@ $api->version(
         $api->post('login', [
             'as' => 'authorization.login',
             'uses' => 'UserController@login',
+        ]);
+
+
+        //package and package options unguarded
+        $api->get('package', [
+            'as' => 'package.findAll',
+            'uses' => 'PackageController@findAll',
+        ]);
+
+        $api->get('package/{id}', [
+            'as' => 'package.find',
+            'uses' => 'PackageController@find',
+        ]);
+
+        
+        $api->get('package_options', [
+            'as' => 'package_options.findAll',
+            'uses' => 'PackageOptionsController@findAll',
+        ]);
+
+        $api->get('package_options/{id}', [
+            'as' => 'package_options.find',
+            'uses' => 'PackageOptionsController@find',
         ]);
     }
 );
