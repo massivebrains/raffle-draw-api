@@ -62,4 +62,16 @@ class PackageOptionsEloquentRepository extends  EloquentRepository implements IP
                 'last_purchased_at' => Carbon::now(),
             ]);
     }
+
+
+    public function findByPackage(string $package)
+    {
+        $res = $this->packageOptionsModel->from('package_options as a')
+            ->select('a.*')
+            ->leftJoin('packages as p', 'a.package_id', 'p.id')
+            ->withTrashed()
+            ->where('p.uuid', $package)
+            ->get();
+        return $res;
+    }
 }

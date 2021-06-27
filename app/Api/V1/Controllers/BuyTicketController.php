@@ -25,6 +25,10 @@ class BuyTicketController extends BaseController
         $this->buyTicketService = $buyTicketService;
     }
 
+    public function findSelf()
+    {
+        return $this->buyTicketService->findSelf();
+    }
 
     public function create(Request $request, IBuyTicketRequest $createRequest)
     {

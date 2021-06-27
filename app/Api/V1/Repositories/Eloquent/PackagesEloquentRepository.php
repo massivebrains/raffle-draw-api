@@ -53,6 +53,34 @@ class PackagesEloquentRepository extends  EloquentRepository implements IPackage
         return $res;
     }
 
+    public function findAllDetailed()
+    {
+        return $this->packageModel->fromQuery(
+            "SELECT a.*,sess.sess_expiry as latest_session_expires_at 
+             from packages a 
+             left join ( 
+                SELECT *,MAX(id) as sess_id, MAX(expires_at) as sess_expiry  
+                from game_session 
+                group by package_id ) as sess 
+                on a.id = sess.package_id"
+        );
+    }
+
+    public function findDetailed($id)
+    {
+        return $this->packageModel->fromQuery(
+            "SELECT a.*,sess.sess_expiry as latest_session_expires_at 
+             from packages a 
+             left join ( 
+                SELECT *,MAX(id) as sess_id, MAX(expires_at) as sess_expiry  
+                from game_session 
+                group by package_id ) as sess 
+                on a.id = sess.package_id where a.uuid = '{$id}'"
+        )->first();
+    }
+
+
+
     public function findByInternalID($id)
     {
         return  $this->packageModel->where('id', $id)->first();

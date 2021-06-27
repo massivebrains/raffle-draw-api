@@ -117,6 +117,10 @@ $api->version(
                 'uses' => 'BuyTicketController@create',
             ]);
 
+            $api->get('my_tickets', [
+                'as' => 'tickets.self',
+                'uses' => 'BuyTicketController@findSelf',
+            ]);
 
 
 
@@ -359,6 +363,15 @@ $api->version(
             'uses' => 'MailViewController@reg',
         ]);
 
+
+        /**
+         * System settings route
+         */
+        $api->get('settings', [
+            'as' => 'settings.findAll',
+            'uses' => 'SysSettingsController@findAll',
+        ]);
+
         /**
          * Auth route
          */
@@ -391,6 +404,11 @@ $api->version(
         $api->get('package_options/{id}', [
             'as' => 'package_options.find',
             'uses' => 'PackageOptionsController@find',
+        ]);
+
+        $api->get('package_options/by_package/{id}', [
+            'as' => 'package_options.findByPackage',
+            'uses' => 'PackageOptionsController@findByPackage',
         ]);
     }
 );

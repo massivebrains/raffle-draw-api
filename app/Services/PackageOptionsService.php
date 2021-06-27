@@ -67,6 +67,26 @@ class PackageOptionsService extends BaseService implements IPackageOptionsServic
         return $response_message;
     }
 
+
+    public function findByPackage($packageID)
+    {
+
+        $result = $this->packageRepo->findDetailed($packageID);
+        if (!$result) {
+            $response_message = $this->customHttpResponse(400, 'Package with the provided id does not exist.');
+            return $response_message;
+        }
+
+        $result = $this->packageOptionsRepo->findByPackage($packageID);
+        if ($result) {
+            $response_message = $this->customHttpResponse(200, 'Success.', $result);
+            return $response_message;
+        }
+        $response_message = $this->customHttpResponse(400, 'Record does not exist.', $result);
+        return $response_message;
+    }
+
+
     public function findAll()
     {
         $result = $this->packageOptionsRepo->findAll();

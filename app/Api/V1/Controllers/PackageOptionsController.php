@@ -55,6 +55,11 @@ class PackageOptionsController extends BaseController
         return $this->packageOptionService->find($id);
     }
 
+    public function findByPackage($id)
+    {
+        return $this->packageOptionService->findByPackage($id);
+    }
+
 
     public function findAll()
     {
