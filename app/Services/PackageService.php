@@ -9,6 +9,7 @@ use App\Contracts\Services\IPackageService;
 use App\DTOs\CreatePackageDTO;
 use App\DTOs\CreatePrizeDTO;
 use App\DTOs\UpdatePackageDTO;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,15 +24,25 @@ class PackageService extends BaseService implements IPackageService
     private $packageRepo;
     private $request;
     private $payload;
+    private $appURL;
+    private $iconPath;
+    private $bannerPath;
+    private $defaultIcon;
+    private $defaultBanner;
 
     public function __construct(IUser $userRepo, Request $request, IPackages $packageRepo)
     {
         $this->userRepo = $userRepo;
         $this->packageRepo = $packageRepo;
         $this->request = $request;
+        $this->appURL = config('settings.app_url');
+        $this->iconPath = config('settings.icon_path');
+        $this->bannerPath = config('settings.banner_path');
+        $this->defaultIcon = config('settings.default_icon');
+        $this->defaultBanner = config('settings.default_banner');
     }
 
-    public function recordExist($id)
+    private function recordExist($id)
     {
         return $this->packageRepo->find($id);
     }
@@ -53,11 +64,113 @@ class PackageService extends BaseService implements IPackageService
         return $this->processUpdate($id);
     }
 
+    private function getIconUrl()
+    {
+        return "{$this->appURL}/{$this->iconPath}";
+    }
+
+    private function getBannerUrl()
+    {
+        return "{$this->appURL}/{$this->bannerPath}";
+    }
+
+    private function generateIconFullPath($item)
+    {
+        $iconURL = $this->getIconUrl();
+        $icon = $item->icon ?: $this->defaultIcon;
+
+        return "{$iconURL}/{$icon}";
+    }
+
+    private static function getExpiry($arr)
+    {
+        $defaultCloseTime = "17:00:00"; //5pm 
+        $daysBeforeExpire = $arr['period'];
+        $packageClostTime = $arr['closes_at'] ?: $defaultCloseTime; //Elvis operator here :)
+
+        $expiryDate = Carbon::now()->addDays($daysBeforeExpire);
+
+        $dateOnly = $expiryDate->toDateString();
+
+        $actualExpireDateTime = $dateOnly . " " . $packageClostTime;
+
+        $res = Carbon::parse($actualExpireDateTime)->subHour();
+
+        return $res;
+    }
+
+    private static function getDefaultCurrentSessionCountdown($data)
+    {
+        $defaultCloseTime = "17:00:00"; //5pm 
+        $closeAt  = $data->close_at ?: $defaultCloseTime; //Elvis operator here :);
+
+        $now = Carbon::now();
+        $dateOnly = $now->toDateString();
+        $actualExpireDateTime = $dateOnly . " " . $closeAt;
+        $newSessionStartDate = Carbon::parse($actualExpireDateTime);
+        $timeBeforeNextSession = $now->diffInSeconds($newSessionStartDate, false);
+        return $timeBeforeNextSession;
+    }
+
+
+    private static function getDefaultNextSessionCountdown($data)
+    {
+        $defaultCloseTime = "17:00:00"; //5pm 
+        $resumptionGap  = $data->new_game_resumption_gap;
+        $closeAt  = $data->close_at ?: $defaultCloseTime; //Elvis operator here :);
+
+        $now = Carbon::now();
+        $dateOnly = $now->toDateString();
+        $actualExpireDateTime = $dateOnly . " " . $closeAt;
+        $newSessionStartDate = Carbon::parse($actualExpireDateTime)->addSeconds($resumptionGap);
+        $timeBeforeNextSession = $now->diffInSeconds($newSessionStartDate, false);
+        return $timeBeforeNextSession;
+    }
+
+    private function getCurrentSessionCountdown($data)
+    {
+        $latestSessionExpiresAt  = $data->latest_session_expires_at;
+        $newSessionStartDate = Carbon::parse($latestSessionExpiresAt);
+        $now = Carbon::now();
+        $timeToEndOfCurrentSession = $now->diffInSeconds($newSessionStartDate, false);
+        return $timeToEndOfCurrentSession;
+    }
+
+    private function getNextSessionCountdown($data)
+    {
+        $resumptionGap  = $data->new_game_resumption_gap;
+        $latestSessionExpiresAt  = $data->latest_session_expires_at;
+        $newSessionStartDate = Carbon::parse($latestSessionExpiresAt)->addSeconds($resumptionGap);
+        $now = Carbon::now();
+        $timeBeforeNextSession = $now->diffInSeconds($newSessionStartDate, false);
+        return $timeBeforeNextSession;
+    }
+
+    private function generateBannerFullPath($item)
+    {
+        $bannerURL = $this->getBannerUrl();
+        $banner = $item->banner ?: $this->defaultBanner;
+
+        return "{$bannerURL}/{$banner}";
+    }
 
     public function find($id)
     {
-        $result = $this->packageRepo->find($id);
+        $result = $this->packageRepo->findDetailed($id);
         if ($result) {
+
+
+            $result->icon = $this->generateIconFullPath($result);
+            $result->banner = $this->generateBannerFullPath($result);
+
+            $result->current_session_ends_in =  $result->latest_session_expires_at ?
+                $this->getCurrentSessionCountdown($result) :
+                $this->getDefaultCurrentSessionCountdown($result);
+
+            $result->next_session_begins_in = $result->latest_session_expires_at ?
+                $this->getNextSessionCountdown($result) :
+                $this->getDefaultNextSessionCountdown($result);
+
             $response_message = $this->customHttpResponse(200, 'Success.', $result);
             return $response_message;
         }
@@ -67,8 +180,27 @@ class PackageService extends BaseService implements IPackageService
 
     public function findAll()
     {
-        $result = $this->packageRepo->findAll();
-        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        $result = $this->packageRepo->findAllDetailed();
+        $mappedResult = [];
+
+        foreach ($result as $item) {
+
+            $item->icon = $this->generateIconFullPath($item);
+            $item->banner = $this->generateBannerFullPath($item);
+
+            $item->current_session_ends_in = $item->latest_session_expires_at ?
+                $this->getCurrentSessionCountdown($item) :
+                $this->getDefaultCurrentSessionCountdown($item);
+
+            $item->next_session_begins_in = $item->latest_session_expires_at ?
+                $this->getNextSessionCountdown($item) :
+                $this->getDefaultNextSessionCountdown($item);
+
+            $mappedResult[] = $item;
+        }
+
+
+        $response_message = $this->customHttpResponse(200, 'Success.', $mappedResult);
         return $response_message;
     }
 

@@ -92,6 +92,13 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         return $this->buyTicket($this->request->package_option_id, $this->user->id);
     }
 
+    public function findSelf()
+    {
+        $result = $this->ticketRepo->findByUserID($this->user->id);
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
+
 
     public function getDrawIndexes($limit): array
     {

@@ -26,4 +26,5 @@ interface IPackageOptions extends IRepository
     public function update(string $id, UpdatePackageOptionsDTO $attributes);
 
     public function updateSells(string $packageOptionID);
+    public function findByPackage(string $packageID);
 }

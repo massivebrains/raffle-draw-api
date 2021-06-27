@@ -26,4 +26,6 @@ interface IPackages extends IRepository
     public function update(string $id, UpdatePackageDTO $attributes);
 
     public function findByInternalID(string $id);
+    public function findDetailed(string $id);
+    public function findAllDetailed();
 }

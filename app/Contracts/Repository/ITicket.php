@@ -17,4 +17,5 @@ interface ITicket
     public function shuffleTicket(string $sessionID);
     public function findByDrawIndex(array $drawIndexes);
     public function updateTicketDraw(array $ticketIDs, UpdateDrawDTO $updateDrawData);
+    public function findByUserID(int $userID);
 }
