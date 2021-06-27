@@ -14,26 +14,10 @@ return [
     |
     */
 
-    'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-    ],
-
-    'mandrill' => [
-        'secret' => env('MANDRILL_SECRET'),
-    ],
-
-    'ses' => [
-        'key' => env('SES_KEY'),
-        'secret' => env('SES_SECRET'),
-        'region' => 'us-east-1',
-    ],
-
-    'stripe' => [
-        'model' => App\User::class,
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
-    ],
-    'nuban_verify' => env('NUBAN_VERIFY', null),
+    'app_url' => env('APP_URL', null),
+    'icon_path' => env('ICON_PATH', null),
+    'banner_path' => env('BANNER_PATH', null),
+    'default_icon' => env('DEFAULT_ICON', null),
+    'default_banner' => env('DEFAULT_BANNER', null),
 
 ];

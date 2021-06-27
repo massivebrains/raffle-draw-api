@@ -118,6 +118,7 @@ $app->register(Ixudra\Curl\CurlServiceProvider::class);
 $app->configure('auth');
 $app->configure('mail');
 $app->configure('services');
+$app->configure('settings');
 
 $app->router->group([
     'namespace' => 'App\Api\V1\Controllers',
