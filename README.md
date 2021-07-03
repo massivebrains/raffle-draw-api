@@ -5,7 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
 [![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
 
-Raffle Draw RESTFUL api project built with Laravel/Lumen microservice. Started and completed within few weeks and observing the SOLID principle (or should I say Quasi SOLID Principle...lol).
+Raffle Draw RESTFUL api project built with Laravel/Lumen framework. Started and completed within few weeks and observing the SOLID principle (or should I say Quasi SOLID Principle...lol).
 
 ## Features:
 - Ticket Management - Purchase, track,etc
