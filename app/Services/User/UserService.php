@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Log;
 class UserService extends BaseService implements IUserService
 {
 
+    private $user;
     private $userRepo;
     private $userVerifyRepo;
     private $oauthRepo;
@@ -48,6 +49,7 @@ class UserService extends BaseService implements IUserService
         $this->walletRepo = $walletRepo;
         $this->EmailService = $EmailService;
         $this->request = $request;
+        $this->user = $request->user('api');
     }
 
     public function create()
@@ -203,7 +205,7 @@ class UserService extends BaseService implements IUserService
 
             DB::beginTransaction();
             try {
-
+// Log::info("payload data   ====>  ".json_encode($this->request->input()));
                 if ($this->request->has('password')) {
 
                     $newHashedPassword = $this->generatePassword($this->request->password);
@@ -218,10 +220,12 @@ class UserService extends BaseService implements IUserService
                 $updateUserInputData = UpdateUserDTO::fromRequest($this->payload);
                 $this->userRepo->update($id, $updateUserInputData);
 
+                $updatedData = $this->userRepo->showByUsername($this->user->username);
+
                 DB::commit();
 
 
-                $response_message = $this->customHttpResponse(200, 'Update successful.');
+                $response_message = $this->customHttpResponse(200, 'Update successful.',$updatedData);
                 return $response_message;
             } catch (\Throwable $th) {
 
