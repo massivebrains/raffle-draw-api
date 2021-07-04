@@ -19,7 +19,7 @@ class OAuthDTO extends BaseDTO
 
     public string $redirect;
 
-    public string $revoke;
+    public string $revoked;
 
 
     public static function fromRequest(array $params)
@@ -32,7 +32,7 @@ class OAuthDTO extends BaseDTO
             'password_client' => 1,
             'personal_access_client' => 0,
             'redirect' => '',
-            'revoke' => 0,
+            'revoked' => 0,
         ]);
     }
 }
