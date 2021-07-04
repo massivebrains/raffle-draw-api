@@ -51,6 +51,7 @@ class UserEloquentRepository extends  EloquentRepository implements IUser
         $res = $this->user->from('user as a')
             ->select(
                 'a.id',
+                'a.uuid',
                 'a.username',
                 'a.password',
                 'a.surname',

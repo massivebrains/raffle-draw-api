@@ -62,7 +62,9 @@ class PackagesEloquentRepository extends  EloquentRepository implements IPackage
                 SELECT *,MAX(id) as sess_id, MAX(expires_at) as sess_expiry  
                 from game_session 
                 group by package_id ) as sess 
-                on a.id = sess.package_id"
+                on a.id = sess.package_id
+            where a.deleted_at is null"
+            
         );
     }
 
@@ -75,7 +77,8 @@ class PackagesEloquentRepository extends  EloquentRepository implements IPackage
                 SELECT *,MAX(id) as sess_id, MAX(expires_at) as sess_expiry  
                 from game_session 
                 group by package_id ) as sess 
-                on a.id = sess.package_id where a.uuid = '{$id}'"
+                on a.id = sess.package_id where a.uuid = '{$id}'
+            and a.deleted_at is null"
         )->first();
     }
 

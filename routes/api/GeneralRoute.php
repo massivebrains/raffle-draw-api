@@ -26,6 +26,9 @@ $api->version(
     function ($api) {
 
 
+        /**********************************
+         * USER ROUTE
+         *********************************/
 
         $api->group(['middleware' => ['auth:api', 'scopes:user']], function ($api) {
 
@@ -53,17 +56,6 @@ $api->version(
             /**
              * Prize Route
              */
-
-
-            $api->post('prize', [
-                'as' => 'prize.create',
-                'uses' => 'PrizeController@create',
-            ]);
-
-            $api->delete('prize/{id}', [
-                'as' => 'prize.delete',
-                'uses' => 'PrizeController@delete',
-            ]);
 
             $api->get('prize', [
                 'as' => 'prize.findAll',
@@ -128,21 +120,6 @@ $api->version(
              * Subscription Route
              */
 
-            $api->get('subscription_freq', [
-                'as' => 'subscribe.freq',
-                'uses' => 'RoutineFrequencyController@findAll',
-            ]);
-
-            $api->get('subscription', [
-                'as' => 'subscribe.findAll',
-                'uses' => 'RoutineController@findAll',
-            ]);
-
-            $api->get('subscription/{id}', [
-                'as' => 'subscribe.find',
-                'uses' => 'RoutineController@find',
-            ]);
-
             $api->post('subscription', [
                 'as' => 'subscribe.create',
                 'uses' => 'RoutineController@create',
@@ -159,24 +136,6 @@ $api->version(
             ]);
 
 
-            /**
-             * Shuffle / Draw Ticket Route
-             */
-            $api->group(['middleware' => [
-                'check_winner_complete',
-            ]], function ($api) {
-
-
-                $api->post('shuffle_ticket', [
-                    'as' => 'ticket.shuffle',
-                    'uses' => 'BuyTicketController@shuffleTicket',
-                ]);
-
-                $api->post('draw_ticket', [
-                    'as' => 'ticket.draw',
-                    'uses' => 'BuyTicketController@drawTicket',
-                ]);
-            });
 
             /**
              * Nuban Verify Account No Route
@@ -201,7 +160,6 @@ $api->version(
             });
 
 
-
             $api->group(['middleware' => [
                 'min_balance',
                 'min_max_withdraw',
@@ -217,15 +175,6 @@ $api->version(
                 'uses' => 'FundWalletController@findSelf',
             ]);
 
-            $api->get('wallet/{id}', [
-                'as' => 'wallet.find',
-                'uses' => 'FundWalletController@find',
-            ]);
-
-            $api->get('wallet', [
-                'as' => 'wallet.findAll',
-                'uses' => 'FundWalletController@findAll',
-            ]);
 
 
             /**
@@ -248,22 +197,6 @@ $api->version(
             ]);
 
 
-
-            /**
-             * Draw Winners Route
-             */
-
-            $api->get('draw_winners', [
-                'as' => 'draw.findAll',
-                'uses' => 'DrawWinnersController@findAll',
-            ]);
-
-            $api->get('draw_winners/{id}', [
-                'as' => 'draw.findBySession',
-                'uses' => 'DrawWinnersController@findBySession',
-            ]);
-
-
             /**
              * User Account Details / Bank Account Route
              */
@@ -274,20 +207,12 @@ $api->version(
                 'uses' => 'UserAccountDetailController@create',
             ]);
 
-            $api->get('bank_account', [
-                'as' => 'bank_account.findAll',
-                'uses' => 'UserAccountDetailController@findAll',
-            ]);
 
             $api->get('bank_account_self', [
                 'as' => 'bank_account.findAllSelf',
                 'uses' => 'UserAccountDetailController@findAllByOwner',
             ]);
 
-            $api->get('bank_account/{id}', [
-                'as' => 'bank_account.find',
-                'uses' => 'UserAccountDetailController@find',
-            ]);
 
             $api->delete('bank_account/{id}', [
                 'as' => 'bank_account.delete',
@@ -296,10 +221,97 @@ $api->version(
         });
 
 
-        /**
-         * Admin Route
-         */
-        $api->group(['middleware' => ['auth:api', 'scopes:user']], function ($api) {
+        /************************************************
+         * ADMIN ROUTE
+         ***************************************************/
+        $api->group(['middleware' => ['auth:api', 'scopes:*']], function ($api) {
+
+
+            /**
+             * Prize Route
+             */
+
+            $api->post('prize', [
+                'as' => 'prize.create',
+                'uses' => 'PrizeController@create',
+            ]);
+
+            $api->delete('prize/{id}', [
+                'as' => 'prize.delete',
+                'uses' => 'PrizeController@delete',
+            ]);
+
+            /**
+             * Subscription Route
+             */
+
+            $api->get('subscription_freq', [
+                'as' => 'subscribe.freq',
+                'uses' => 'RoutineFrequencyController@findAll',
+            ]);
+
+            $api->get('subscription', [
+                'as' => 'subscribe.findAll',
+                'uses' => 'RoutineController@findAll',
+            ]);
+
+            $api->get('subscription/{id}', [
+                'as' => 'subscribe.find',
+                'uses' => 'RoutineController@find',
+            ]);
+
+
+            /**
+             * Shuffle / Draw Ticket Route
+             */
+            $api->group(['middleware' => [
+                'check_winner_complete',
+            ]], function ($api) {
+
+
+                $api->post('shuffle_ticket', [
+                    'as' => 'ticket.shuffle',
+                    'uses' => 'BuyTicketController@shuffleTicket',
+                ]);
+
+                $api->post('draw_ticket', [
+                    'as' => 'ticket.draw',
+                    'uses' => 'BuyTicketController@drawTicket',
+                ]);
+            });
+
+            /**
+             *  Wallet Route
+             */
+
+            $api->get('wallet/{id}', [
+                'as' => 'wallet.find',
+                'uses' => 'FundWalletController@find',
+            ]);
+
+            $api->get('wallet', [
+                'as' => 'wallet.findAll',
+                'uses' => 'FundWalletController@findAll',
+            ]);
+
+
+            /**
+             * User Account Details / Bank Account Route
+             */
+
+
+
+            $api->get('bank_account', [
+                'as' => 'bank_account.findAll',
+                'uses' => 'UserAccountDetailController@findAll',
+            ]);
+
+
+            $api->get('bank_account/{id}', [
+                'as' => 'bank_account.find',
+                'uses' => 'UserAccountDetailController@find',
+            ]);
+
 
 
             /**
@@ -340,6 +352,14 @@ $api->version(
                 'as' => 'package_options.delete',
                 'uses' => 'PackageOptionsController@delete',
             ]);
+
+            /**
+             * System settings route
+             */
+            $api->get('settings', [
+                'as' => 'settings.findAll',
+                'uses' => 'SysSettingsController@findAll',
+            ]);
         });
 
         /**
@@ -364,13 +384,7 @@ $api->version(
         ]);
 
 
-        /**
-         * System settings route
-         */
-        $api->get('settings', [
-            'as' => 'settings.findAll',
-            'uses' => 'SysSettingsController@findAll',
-        ]);
+
 
         /**
          * Auth route
@@ -378,6 +392,11 @@ $api->version(
         $api->post('user', [
             'as' => 'authorizations.register',
             'uses' => 'UserController@register',
+        ]);
+
+        $api->post('admin', [
+            'as' => 'authorizations.registerAdmin',
+            'uses' => 'UserController@registerAdmin',
         ]);
 
         $api->post('login', [
@@ -409,6 +428,20 @@ $api->version(
         $api->get('package_options/by_package/{id}', [
             'as' => 'package_options.findByPackage',
             'uses' => 'PackageOptionsController@findByPackage',
+        ]);
+
+        /**
+         * Draw Winners Route
+         */
+
+        $api->get('draw_winners', [
+            'as' => 'draw.findAll',
+            'uses' => 'DrawWinnersController@findAll',
+        ]);
+
+        $api->get('draw_winners/{id}', [
+            'as' => 'draw.findBySession',
+            'uses' => 'DrawWinnersController@findBySession',
         ]);
     }
 );
