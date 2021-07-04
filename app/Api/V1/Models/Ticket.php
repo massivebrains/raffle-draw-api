@@ -8,16 +8,16 @@ class Ticket extends BaseModel
 {
     protected $table = "ticket";
 
-    protected $with = ["user:id,username,surname,firstname,phone,email", "packageOptions:id,price"];
+    protected $with = ["user:id,username,surname,firstname,phone,email", "packageOption:id,price"];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function packageOptions()
+    public function packageOption()
     {
-        return $this->belongsTo(packageOptions::class, 'package_option_id');
+        return $this->belongsTo(PackageOptions::class, 'package_option_id');
     }
 
     public function package()

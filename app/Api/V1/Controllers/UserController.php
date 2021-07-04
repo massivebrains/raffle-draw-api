@@ -7,13 +7,10 @@ use App\Contracts\FormRequest\IUpdateUserRequest;
 use App\Contracts\FormRequest\IUserLoginRequest;
 use App\Contracts\FormRequest\IUserRegisterRequest;
 use App\Contracts\Repository\IUser;
-use App\Contracts\Repository\IUserActivityLog;
 use App\Contracts\Services\ILoginService;
-use App\Contracts\Services\IRegisterService;
 use App\Contracts\Services\IUserService;
-use App\Utils\UserMapper;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class UserController extends BaseController
 {
@@ -68,6 +65,7 @@ class UserController extends BaseController
     public function register(Request $request, IUserRegisterRequest $registerRequest)
     {
 
+        $request['role'] = 1;
         $validation = $registerRequest->validate($request);
 
         if ($validation->fails()) {
@@ -77,6 +75,24 @@ class UserController extends BaseController
 
         return $this->userService->create();
     }
+
+
+
+    public function registerAdmin(Request $request, IUserRegisterRequest $registerRequest)
+    {
+        $request['role'] = 2;
+
+        $validation = $registerRequest->validate($request);
+
+        if ($validation->fails()) {
+            $response_message = $this->customHttpResponse(400, 'Incorrect details all fields are required.', $validation->errors());
+            return $response_message;
+        }
+
+        return $this->userService->create();
+    }
+
+
 
 
     public function update($id, Request $request, IUpdateUserRequest $updateRequest)

@@ -31,13 +31,17 @@ class OAuthRepository extends  EloquentRepository implements IOAuth
 
     public function create(OAuthDTO $details)
     {
-
-        //convert POPO to array for the create() quick wrapper below
-        $details =  json_decode(json_encode($details), true);
-
         //create entity
-        $entity = $this->oauth->create($details);
-
+        $entity = $this->oauth;
+        $entity->id = $details->id;
+        $entity->user_id =  $details->user_id;
+        $entity->name =  $details->name;
+        $entity->secret =  $details->secret;
+        $entity->password_client = $details->password_client;
+        $entity->personal_access_client = $details->personal_access_client;
+        $entity->redirect = $details->redirect;
+        $entity->revoked = $details->revoked;
+        $entity->save();
         return $entity;
     }
 
