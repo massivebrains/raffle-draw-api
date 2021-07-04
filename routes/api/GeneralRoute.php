@@ -196,6 +196,11 @@ $api->version(
                 'uses' => 'GameSessionController@findAllActive',
             ]);
 
+            $api->get('game_session_latest/{package_id}', [
+                'as' => 'session.findOneLatestByPackage',
+                'uses' => 'GameSessionController@findOneLatestByPackage',
+            ]);
+
 
             /**
              * User Account Details / Bank Account Route

@@ -53,6 +53,17 @@ class GameSessionEloquentRepository extends  EloquentRepository implements IGame
         return $res;
     }
 
+    public function findOneLatestByPackage($packageID)
+    {
+        $res = $this->sessionModel
+            ->where('package_id', $packageID)
+            ->where(DB::raw('expected_winners'), '>', DB::raw('selected_winners'))  //winners not reached or no winning limit set
+            ->where(DB::raw('TIMESTAMPDIFF(SECOND,CURRENT_TIMESTAMP,expires_at)'), '<', '1') //session must have expired / closed.
+            ->orderBy('created_at', 'desc')
+            ->first();
+        return $res;
+    }
+
     public function winnerCompleted($sessionID)
     {
         return $this->sessionModel->select('uuid')

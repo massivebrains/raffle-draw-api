@@ -29,6 +29,11 @@ class GameSessionController extends BaseController
         return $this->gameSessionService->findAllActive();
     }
 
+    public function findOneLatestByPackage($package_id)
+    {
+        return $this->gameSessionService->findOneLatestByPackage($package_id);
+    }
+
 
     public function findAll()
     {

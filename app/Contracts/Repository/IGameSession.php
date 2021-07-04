@@ -28,4 +28,6 @@ interface IGameSession extends IRepository
     public function updateSells(string $sessionID);
 
     public function updateDraw(string $sessionID, int $selectedCount);
+
+    public function findOneLatestByPackage(string $package_id);
 }
