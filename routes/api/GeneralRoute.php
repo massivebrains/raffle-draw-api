@@ -228,6 +228,15 @@ $api->version(
 
 
             /**
+             * Create admin Route - Note: only a super admin can perform this
+             */
+            $api->post('admin', [
+                'as' => 'authorizations.registerAdmin',
+                'uses' => 'UserController@registerAdmin',
+            ]);
+
+
+            /**
              * Prize Route
              */
 
@@ -394,10 +403,6 @@ $api->version(
             'uses' => 'UserController@register',
         ]);
 
-        $api->post('admin', [
-            'as' => 'authorizations.registerAdmin',
-            'uses' => 'UserController@registerAdmin',
-        ]);
 
         $api->post('login', [
             'as' => 'authorization.login',
