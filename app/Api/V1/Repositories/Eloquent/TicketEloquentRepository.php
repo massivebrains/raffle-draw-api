@@ -39,6 +39,18 @@ class TicketEloquentRepository extends  EloquentRepository implements ITicket
         return $res;
     }
 
+    public function findBySessionID(string $sessionID)
+    {
+        $res = $this->ticketModel->from('ticket as a')
+            ->select('a.*', 'p.name as package_name', 'descr as package_desc')
+            ->leftJoin('packages as p', 'a.package_id', 'p.id')
+            ->withTrashed()
+            ->where('a.session_id', $sessionID)
+            ->whereNull('a.deleted_at')
+            ->get();
+        return $res;
+    }
+
     public function create(CreateTicketDTO $details)
     {
         //convert POPO to array for the create() quick wrapper below

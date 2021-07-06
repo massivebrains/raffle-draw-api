@@ -114,6 +114,11 @@ $api->version(
                 'uses' => 'BuyTicketController@findSelf',
             ]);
 
+            $api->get('session_tickets/{session_id}', [
+                'as' => 'tickets.session',
+                'uses' => 'BuyTicketController@findBySession',
+            ]);
+
 
 
             /**

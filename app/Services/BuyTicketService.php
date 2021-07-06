@@ -92,6 +92,20 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         return $this->buyTicket($this->request->package_option_id, $this->user->id);
     }
 
+    public function findBySession(string $sessionID)
+    {
+        $dbGameSession = $this->gameSessionRepo->find($sessionID);
+
+        if (!$dbGameSession) {
+            $response_message = $this->customHttpResponse(400, 'No session with that ID exist.');
+            return $response_message;
+        }
+        $sessionIDInternal = $dbGameSession->getOriginal('id');
+        $result = $this->ticketRepo->findBySessionID($sessionIDInternal);
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
+
     public function findSelf()
     {
         $result = $this->ticketRepo->findByUserID($this->user->id);

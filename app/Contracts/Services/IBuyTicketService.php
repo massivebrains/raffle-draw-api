@@ -12,4 +12,5 @@ interface IBuyTicketService
     public function drawTicket(DrawTicketDTO $drawInputData);
     public function buyTicket(string $packageOptionID, int $userID, int $routineID);
     public function findSelf();
+    public function findBySession(string $sessionID);
 }

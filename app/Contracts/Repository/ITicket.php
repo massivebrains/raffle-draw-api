@@ -18,4 +18,5 @@ interface ITicket
     public function findByDrawIndex(array $drawIndexes);
     public function updateTicketDraw(array $ticketIDs, UpdateDrawDTO $updateDrawData);
     public function findByUserID(int $userID);
+    public function findBySessionID(string  $sessionID);
 }

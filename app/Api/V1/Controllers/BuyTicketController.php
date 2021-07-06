@@ -30,6 +30,11 @@ class BuyTicketController extends BaseController
         return $this->buyTicketService->findSelf();
     }
 
+    public function findBySession($session_id)
+    {
+        return $this->buyTicketService->findBySession($session_id);
+    }
+
     public function create(Request $request, IBuyTicketRequest $createRequest)
     {
 
