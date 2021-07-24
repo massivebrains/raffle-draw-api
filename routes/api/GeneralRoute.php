@@ -54,6 +54,16 @@ $api->version(
 
 
             /**
+             * Winning Draw
+             */
+
+            $api->get('my_draw_winnings', [
+                'as' => 'draw.findAllSelf',
+                'uses' => 'DrawWinnersController@findAllSelf',
+            ]);
+
+
+            /**
              * Prize Route
              */
 

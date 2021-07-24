@@ -28,4 +28,9 @@ class DrawWinnersController extends BaseController
     {
         return $this->drawWinnersService->findAll();
     }
+
+    public function findAllSelf()
+    {
+        return $this->drawWinnersService->findAllSelf();
+    }
 }

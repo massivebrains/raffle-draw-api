@@ -33,12 +33,42 @@ class DrawWinnersEloquentRepository extends  EloquentRepository implements IDraw
         return $res;
     }
 
+
     public function findBySession(int $sessionID)
     {
-        $res = $this->drawModel
-            ->where('session_id', $sessionID)
+        $res = $this->drawModel->from('draw_winners as a')
+            ->select('a.*', 'p.uuid', 'p.name', 'p.slug', 'p.icon', 'sess.uuid as sessionid')
+            ->leftJoin('packages as p', 'a.package_id', 'p.id')
+            ->leftJoin('game_session as sess', 'a.session_id', 'sess.id')
+            ->withTrashed()
+            ->where('a.session_id', $sessionID)
+            ->whereNull('a.deleted_at')
             ->get();
         return $res;
     }
 
+    public function findAllSelf(int $userID)
+    {
+        $res = $this->drawModel->from('draw_winners as a')
+            ->select('a.*', 'p.uuid', 'p.name', 'p.slug', 'p.icon', 'sess.uuid as sessionid')
+            ->leftJoin('packages as p', 'a.package_id', 'p.id')
+            ->leftJoin('game_session as sess', 'a.session_id', 'sess.id')
+            ->withTrashed()
+            ->where('a.owner_id', $userID)
+            ->whereNull('a.deleted_at')
+            ->get();
+        return $res;
+    }
+
+    public function findAllDetailed()
+    {
+        $res = $this->drawModel->from('draw_winners as a')
+            ->select('a.*', 'p.uuid', 'p.name', 'p.slug', 'p.icon', 'sess.uuid as sessionid')
+            ->leftJoin('packages as p', 'a.package_id', 'p.id')
+            ->leftJoin('game_session as sess', 'a.session_id', 'sess.id')
+            ->withTrashed()
+            ->whereNull('a.deleted_at')
+            ->get();
+        return $res;
+    }
 }

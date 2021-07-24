@@ -9,6 +9,7 @@ use App\Contracts\Services\IPackageService;
 use App\DTOs\CreatePackageDTO;
 use App\DTOs\CreatePrizeDTO;
 use App\DTOs\UpdatePackageDTO;
+use App\Utils\Config;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,22 +25,15 @@ class PackageService extends BaseService implements IPackageService
     private $packageRepo;
     private $request;
     private $payload;
-    private $appURL;
-    private $iconPath;
-    private $bannerPath;
-    private $defaultIcon;
-    private $defaultBanner;
+    private $config;
 
-    public function __construct(IUser $userRepo, Request $request, IPackages $packageRepo)
+
+    public function __construct(IUser $userRepo, Request $request, IPackages $packageRepo, Config $config)
     {
         $this->userRepo = $userRepo;
         $this->packageRepo = $packageRepo;
         $this->request = $request;
-        $this->appURL = config('settings.app_url');
-        $this->iconPath = config('settings.icon_path');
-        $this->bannerPath = config('settings.banner_path');
-        $this->defaultIcon = config('settings.default_icon');
-        $this->defaultBanner = config('settings.default_banner');
+        $this->config = $config;
     }
 
     private function recordExist($id)
@@ -64,23 +58,6 @@ class PackageService extends BaseService implements IPackageService
         return $this->processUpdate($id);
     }
 
-    private function getIconUrl()
-    {
-        return "{$this->appURL}/{$this->iconPath}";
-    }
-
-    private function getBannerUrl()
-    {
-        return "{$this->appURL}/{$this->bannerPath}";
-    }
-
-    private function generateIconFullPath($item)
-    {
-        $iconURL = $this->getIconUrl();
-        $icon = $item->icon ?: $this->defaultIcon;
-
-        return "{$iconURL}/{$icon}";
-    }
 
     private static function getExpiry($arr)
     {
@@ -146,13 +123,6 @@ class PackageService extends BaseService implements IPackageService
         return $timeBeforeNextSession;
     }
 
-    private function generateBannerFullPath($item)
-    {
-        $bannerURL = $this->getBannerUrl();
-        $banner = $item->banner ?: $this->defaultBanner;
-
-        return "{$bannerURL}/{$banner}";
-    }
 
     public function find($id)
     {
@@ -160,8 +130,8 @@ class PackageService extends BaseService implements IPackageService
         if ($result) {
 
 
-            $result->icon = $this->generateIconFullPath($result);
-            $result->banner = $this->generateBannerFullPath($result);
+            $result->icon = $this->config->generateIconFullPath($result);
+            $result->banner = $this->config->generateBannerFullPath($result);
 
             $result->current_session_ends_in =  $result->latest_session_expires_at ?
                 $this->getCurrentSessionCountdown($result) :
@@ -185,8 +155,8 @@ class PackageService extends BaseService implements IPackageService
 
         foreach ($result as $item) {
 
-            $item->icon = $this->generateIconFullPath($item);
-            $item->banner = $this->generateBannerFullPath($item);
+            $item->icon = $this->config->generateIconFullPath($item);
+            $item->banner = $this->config->generateBannerFullPath($item);
 
             $item->current_session_ends_in = $item->latest_session_expires_at ?
                 $this->getCurrentSessionCountdown($item) :
