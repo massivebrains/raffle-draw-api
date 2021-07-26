@@ -36,10 +36,6 @@ $api->version(
              * Users Route
              */
 
-            $api->get('user', [
-                'as' => 'authorization.user',
-                'uses' => 'UserController@findAll',
-            ]);
 
             $api->get('user/{id}', [
                 'as' => 'authorization.show',
@@ -248,6 +244,25 @@ $api->version(
 
 
             /**
+             * User Route
+             */
+            $api->get('user', [
+                'as' => 'authorization.user',
+                'uses' => 'UserController@findAll',
+            ]);
+
+            $api->get('admin', [
+                'as' => 'authorization.admin',
+                'uses' => 'UserController@findAllAdmin',
+            ]);
+
+            $api->get('players', [
+                'as' => 'authorization.players',
+                'uses' => 'UserController@findAllPlayers',
+            ]);
+
+
+            /**
              * Create admin Route - Note: only a super admin can perform this
              */
             $api->post('admin', [
@@ -388,6 +403,11 @@ $api->version(
             $api->get('settings', [
                 'as' => 'settings.findAll',
                 'uses' => 'SysSettingsController@findAll',
+            ]);
+
+            $api->get('stats', [
+                'as' => 'stats.findAll',
+                'uses' => 'SysStatsController@findAll',
             ]);
         });
 

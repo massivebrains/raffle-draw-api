@@ -36,6 +36,16 @@ class UserController extends BaseController
         return $this->userService->findAll();
     }
 
+    public function findAllAdmin()
+    {
+        return $this->userService->findAllAdmin();
+    }
+
+    public function findAllPlayers()
+    {
+        return $this->userService->findAllPlayers();
+    }
+
 
     public function logout(Request $request)
     {

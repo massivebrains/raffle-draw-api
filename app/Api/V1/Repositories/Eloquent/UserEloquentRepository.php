@@ -46,6 +46,24 @@ class UserEloquentRepository extends  EloquentRepository implements IUser
         return $res;
     }
 
+
+    public function getAllAdmin()
+    {
+        $res = $this->user
+            ->where('role', "<>", "1")
+            ->get();
+        return $res;
+    }
+
+    public function getAllPlayers()
+    {
+        $res = $this->user
+            ->where('role', "1")
+            ->get();
+        return $res;
+    }
+
+
     public function showByUsername(string $username)
     {
         $res = $this->user->from('user as a')

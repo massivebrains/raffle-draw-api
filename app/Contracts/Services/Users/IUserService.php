@@ -8,4 +8,6 @@ interface IUserService
     public function update(string $id);
     public function find(string $id);
     public function findAll();
+    public function findAllAdmin();
+    public function findAllPlayers();
 }
