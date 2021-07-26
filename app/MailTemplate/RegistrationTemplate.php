@@ -7,7 +7,8 @@ class RegistrationTemplate
     public static function getHtml($detail)
     {
         $name = ucfirst($detail['name']);
-        $link = "http://raffle.ezugudor.com/api/email_verify_code/{$detail['verify_code']}";
+        // $link = "http://raffle.ezugudor.com/api/email_verify_code/{$detail['verify_code']}";
+        $link = "https://landlotto.ng/verification?id={$detail['verify_code']}";
         $html = <<<EOF
            
 <div style="padding:0 20px;font-family:arial">

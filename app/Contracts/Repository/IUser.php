@@ -42,4 +42,6 @@ interface IUser extends IRepository
     public function verifyEmail(int $userID, UpdateUserEmailVerifyDTO $details);
 
     public function getByEmail(string $email);
+    public function getAllAdmin();
+    public function getAllPlayers();
 }

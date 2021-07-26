@@ -86,6 +86,20 @@ class UserService extends BaseService implements IUserService
         return $response_message;
     }
 
+    public function findAllAdmin()
+    {
+        $result = $this->userRepo->getAllAdmin();
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
+
+    public function findAllPlayers()
+    {
+        $result = $this->userRepo->getAllPlayers();
+        $response_message = $this->customHttpResponse(200, 'Success.', $result);
+        return $response_message;
+    }
+
     public function hasDBData($handle)
     {
         return $handle ? true : false;
@@ -205,7 +219,7 @@ class UserService extends BaseService implements IUserService
 
             DB::beginTransaction();
             try {
-// Log::info("payload data   ====>  ".json_encode($this->request->input()));
+                // Log::info("payload data   ====>  ".json_encode($this->request->input()));
                 if ($this->request->has('password')) {
 
                     $newHashedPassword = $this->generatePassword($this->request->password);
@@ -225,7 +239,7 @@ class UserService extends BaseService implements IUserService
                 DB::commit();
 
 
-                $response_message = $this->customHttpResponse(200, 'Update successful.',$updatedData);
+                $response_message = $this->customHttpResponse(200, 'Update successful.', $updatedData);
                 return $response_message;
             } catch (\Throwable $th) {
 
