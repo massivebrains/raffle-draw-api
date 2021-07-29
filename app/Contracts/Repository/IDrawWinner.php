@@ -11,4 +11,5 @@ interface IDrawWinner extends IRepository
     public function findBySession(int $sessionID);
     public function findAllDetailed();
     public function findAllSelf(int $userID);
+    public function getStat();
 }

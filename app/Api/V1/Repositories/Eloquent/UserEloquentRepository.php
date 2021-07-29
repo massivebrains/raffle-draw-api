@@ -63,6 +63,19 @@ class UserEloquentRepository extends  EloquentRepository implements IUser
         return $res;
     }
 
+    public function getStat()
+    {
+        $res = $this->user
+            ->fromQuery(
+                "SELECT count(u.id) as total_registered_users, 
+                        sum(case when Date(u.created_at) = CURRENT_DATE then 1 else 0 end) as today_registered_users
+                 from user u 
+                 where u.role = 1 and u.deleted_at is null
+                 "
+            );
+        return $res;
+    }
+
 
     public function showByUsername(string $username)
     {

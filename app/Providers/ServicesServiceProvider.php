@@ -17,6 +17,7 @@ use App\Contracts\Services\IPrizeService;
 use App\Contracts\Services\IRoutineFrequencyService;
 use App\Contracts\Services\IRoutineService;
 use App\Contracts\Services\ISysSettingsService;
+use App\Contracts\Services\ISysStatsService;
 use App\Contracts\Services\IUserAccountDetailService;
 use App\Contracts\Services\IUserService;
 use App\Contracts\Services\IVerificationService;
@@ -36,6 +37,7 @@ use App\Services\PrizeService;
 use App\Services\RoutineFrequencyService;
 use App\Services\RoutineService;
 use App\Services\SysSettingsService;
+use App\Services\SysStatsService;
 use App\Services\UserAccountDetailService;
 use App\Services\UserService;
 use App\Services\VerificationService;
@@ -72,5 +74,6 @@ class ServicesServiceProvider extends ServiceProvider
         $this->app->bind(IVerificationService::class, VerificationService::class);
         $this->app->bind(IEmailService::class, EmailService::class);
         $this->app->bind(ISysSettingsService::class, SysSettingsService::class);
+        $this->app->bind(ISysStatsService::class, SysStatsService::class);
     }
 }
