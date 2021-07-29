@@ -71,4 +71,36 @@ class DrawWinnersEloquentRepository extends  EloquentRepository implements IDraw
             ->get();
         return $res;
     }
+
+    public function getStat()
+    {
+        $res = $this->drawModel
+            ->fromQuery(
+                "SELECT 
+                count(dw.id) as total_winners_count, 
+                sum(case when Date(dw.created_at) = CURRENT_DATE then 1 else 0 end) as today_winner_count,
+                
+                sum(case when package_id = 1 then 1 else 0 end) as daily_winner_count,
+                sum(case when package_id = 1 and Date(dw.created_at) = CURRENT_DATE then 1 else 0 end) as today_daily_winner_count,
+                
+                sum(case when package_id = 2 then 1 else 0 end) as weekly_winner_count,
+                sum(case when package_id = 2 and Date(dw.created_at) = CURRENT_DATE then 1 else 0 end) as today_weekly_winner_count,
+                
+                sum(case when package_id = 3 then 1 else 0 end) as monthly_winner_count,
+                sum(case when package_id = 3 and Date(dw.created_at) = CURRENT_DATE then 1 else 0 end) as today_monthly_winner_count,
+                
+                sum(case when package_id = 4 then 1 else 0 end) as bi_monthly_winner_count,
+                sum(case when package_id = 4 and Date(dw.created_at) = CURRENT_DATE then 1 else 0 end) as today_bi_monthly_winner_count,
+                
+                sum(case when package_id = 5 then 1 else 0 end) as quaterly_winner_count,
+                sum(case when package_id = 5 and Date(dw.created_at) = CURRENT_DATE then 1 else 0 end) as today_quaterly_winner_count
+                
+              
+                from draw_winners dw 
+                where dw.deleted_at is null
+               
+                 "
+            );
+        return $res;
+    }
 }

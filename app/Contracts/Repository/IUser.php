@@ -44,4 +44,5 @@ interface IUser extends IRepository
     public function getByEmail(string $email);
     public function getAllAdmin();
     public function getAllPlayers();
+    public function getStat();
 }

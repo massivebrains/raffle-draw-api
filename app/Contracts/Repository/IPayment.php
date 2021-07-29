@@ -14,4 +14,5 @@ interface IPayment extends IRepository
      * @throws RepositoryException
      */
     public function create(CreatePaymentDTO $attributes);
+    public function getStat();
 }

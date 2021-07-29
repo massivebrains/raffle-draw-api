@@ -89,4 +89,36 @@ class TicketEloquentRepository extends  EloquentRepository implements ITicket
         return $this->ticketModel->whereIn('uuid', $ticketIDs)
             ->update($details);
     }
+
+    public function getStat()
+    {
+        $res = $this->ticketModel
+            ->fromQuery(
+                "SELECT 
+                count(tck.id) as total_ticket_count, 
+                sum(case when Date(tck.created_at) = CURRENT_DATE then 1 else 0 end) as today_ticket_count,
+                
+                sum(case when package_id = 1 then 1 else 0 end) as daily_ticket_count,
+                sum(case when package_id = 1 and Date(tck.created_at) = CURRENT_DATE then 1 else 0 end) as today_daily_ticket_count,
+                
+                sum(case when package_id = 2 then 1 else 0 end) as weekly_ticket_count,
+                sum(case when package_id = 2 and Date(tck.created_at) = CURRENT_DATE then 1 else 0 end) as today_weekly_ticket_count,
+                
+                sum(case when package_id = 3 then 1 else 0 end) as monthly_ticket_count,
+                sum(case when package_id = 3 and Date(tck.created_at) = CURRENT_DATE then 1 else 0 end) as today_monthly_ticket_count,
+                
+                sum(case when package_id = 4 then 1 else 0 end) as bi_monthly_ticket_count,
+                sum(case when package_id = 4 and Date(tck.created_at) = CURRENT_DATE then 1 else 0 end) as today_bi_monthly_ticket_count,
+                
+                sum(case when package_id = 5 then 1 else 0 end) as quaterly_ticket_count,
+                sum(case when package_id = 5 and Date(tck.created_at) = CURRENT_DATE then 1 else 0 end) as today_quaterly_ticket_count
+                
+              
+                from ticket tck 
+                where tck.deleted_at is null
+               
+                 "
+            );
+        return $res;
+    }
 }
