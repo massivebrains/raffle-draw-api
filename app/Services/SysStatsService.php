@@ -28,10 +28,10 @@ class SysStatsService extends BaseService implements ISysStatsService
 
     public function findAll()
     {
-        $userStat = $this->userRepo->getStat();
-        $ticketStat = $this->ticketRepo->getStat();
-        $winnerStat = $this->drawWinnerRepo->getStat();
-        $paymentStat = $this->paymentRepo->getStat();
+        $userStat = $this->userRepo->getStat()->first();
+        $ticketStat = $this->ticketRepo->getStat()->first();
+        $winnerStat = $this->drawWinnerRepo->getStat()->first();
+        $paymentStat = $this->paymentRepo->getStat()->first();
         $result = [
             'user_stat' => $userStat,
             'ticket_stat' => $ticketStat,

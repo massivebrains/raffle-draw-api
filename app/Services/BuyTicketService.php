@@ -145,7 +145,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
                 'session_id' => $sessionID
             ];
             $htmlMail = WinningTicketTemplate::getHtml($detail);
-            $this->EmailService->sendMail($detail['email'], 'Congratulations! :: Ticket Picked.', $htmlMail);
+            $this->EmailService->sendMail($detail['email'], 'Congratulations! :: Winning Ticket.', $htmlMail);
         }
     }
 
