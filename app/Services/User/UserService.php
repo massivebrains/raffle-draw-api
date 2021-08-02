@@ -219,7 +219,6 @@ class UserService extends BaseService implements IUserService
 
             DB::beginTransaction();
             try {
-                // Log::info("payload data   ====>  ".json_encode($this->request->input()));
                 if ($this->request->has('password')) {
 
                     $newHashedPassword = $this->generatePassword($this->request->password);
@@ -253,6 +252,32 @@ class UserService extends BaseService implements IUserService
 
             Log::info("One of the DB statements failed. Error: " . $th);
             $response_message = $this->customHttpResponse(500, 'Transaction Error.');
+            return $response_message;
+        }
+    }
+
+    public function softDelete($userID)
+    {
+        $exist = $this->recordExist($userID);
+        if (!$exist) {
+            $response_message = $this->customHttpResponse(400, 'Record does not exist.');
+            return $response_message;
+        }
+
+        if ($this->user->uuid === $userID) {
+            $response_message = $this->customHttpResponse(400, 'You cannot remove yourself.');
+            return $response_message;
+        }
+
+        try {
+            $this->userRepo->delete($userID);
+
+            $response_message = $this->customHttpResponse(200, 'User deleted successful.');
+            return $response_message;
+        } catch (\Throwable $th) {
+            Log::info("Error deleting entity: " . $th);
+
+            $response_message = $this->customHttpResponse(500, 'Delete Error.');
             return $response_message;
         }
     }

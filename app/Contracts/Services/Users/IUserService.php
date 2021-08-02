@@ -10,4 +10,5 @@ interface IUserService
     public function findAll();
     public function findAllAdmin();
     public function findAllPlayers();
+    public function softDelete(string $userID);
 }

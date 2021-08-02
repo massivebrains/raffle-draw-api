@@ -8,6 +8,7 @@ use App\Contracts\Repository\IUser;
 use App\Contracts\Services\IPrizeService;
 use App\MailTemplate\NewTicketTemplate;
 use App\MailTemplate\RegistrationTemplate;
+use App\MailTemplate\ResetPasswordTemplate;
 use App\Utils\UserMapper;
 use Illuminate\Http\Request;
 
@@ -27,9 +28,9 @@ class MailViewController extends BaseController
 
     public function reg()
     {
-        $detail = ['name' => 'udor', 'company' => 'Land Lotto'];
+        $detail = ['name' => 'udor', 'company' => 'Land Lotto', 'verify_code' => 'fdaf7df8asf', 'email' => 'nelsonsmrt@gmail.com'];
         // $aa = RegistrationTemplate::getHtml($detail);
-        $aa = NewTicketTemplate::getHtml($detail);
+        $aa = ResetPasswordTemplate::getHtml($detail);
         // var_dump($aa);
         return $aa;
     }

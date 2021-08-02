@@ -12,6 +12,7 @@ use App\Contracts\Services\ILoginService;
 use App\Contracts\Services\INubanVerifyService;
 use App\Contracts\Services\IPackageOptionsService;
 use App\Contracts\Services\IPackageService;
+use App\Contracts\Services\IPasswordRecoveryService;
 use App\Contracts\Services\IPaymentProvidersService;
 use App\Contracts\Services\IPrizeService;
 use App\Contracts\Services\IRoutineFrequencyService;
@@ -32,6 +33,7 @@ use App\Services\LoginService;
 use App\Services\NubanVerifyService;
 use App\Services\PackageOptionsService;
 use App\Services\PackageService;
+use App\Services\PasswordRecoveryService;
 use App\Services\PaymentProvidersService;
 use App\Services\PrizeService;
 use App\Services\RoutineFrequencyService;
@@ -75,5 +77,6 @@ class ServicesServiceProvider extends ServiceProvider
         $this->app->bind(IEmailService::class, EmailService::class);
         $this->app->bind(ISysSettingsService::class, SysSettingsService::class);
         $this->app->bind(ISysStatsService::class, SysStatsService::class);
+        $this->app->bind(IPasswordRecoveryService::class, PasswordRecoveryService::class);
     }
 }
