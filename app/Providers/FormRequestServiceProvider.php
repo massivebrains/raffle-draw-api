@@ -11,6 +11,8 @@ use App\Contracts\FormRequest\ICreateUserAccountDetailRequest;
 use App\Contracts\FormRequest\IDrawTicketRequest;
 use App\Contracts\FormRequest\IFundWalletRequest;
 use App\Contracts\FormRequest\INubanVerifyRequest;
+use App\Contracts\FormRequest\IPasswordRecoveryNewPasswordRequest;
+use App\Contracts\FormRequest\IPasswordRecoverySendEmailRequest;
 use App\Contracts\FormRequest\IShuffleTicketRequest;
 use App\Contracts\FormRequest\IUpdatePackageOptionsRequest;
 use App\Contracts\FormRequest\IUpdatePackageRequest;
@@ -28,6 +30,8 @@ use App\Http\Request\CreateUserAccountDetailRequest;
 use App\Http\Request\DrawTicketRequest;
 use App\Http\Request\FundWalletRequest;
 use App\Http\Request\NubanVerifyRequest;
+use App\Http\Request\PasswordRecoveryNewPasswordRequest;
+use App\Http\Request\PasswordRecoverySendEmailRequest;
 use App\Http\Request\ShuffleTicketRequest;
 use App\Http\Request\UpdatePackageOptionsRequest;
 use App\Http\Request\UpdatePackageRequest;
@@ -66,6 +70,7 @@ class FormRequestServiceProvider extends ServiceProvider
         $this->app->bind(IWithdrawRequest::class, WithdrawRequest::class);
         $this->app->bind(ICreateRoutineRequest::class, CreateRoutineRequest::class);
         $this->app->bind(IVerificationRequest::class, VerificationRequest::class);
-
+        $this->app->bind(IPasswordRecoverySendEmailRequest::class, PasswordRecoverySendEmailRequest::class);
+        $this->app->bind(IPasswordRecoveryNewPasswordRequest::class, PasswordRecoveryNewPasswordRequest::class);
     }
 }

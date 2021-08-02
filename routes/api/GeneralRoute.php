@@ -251,6 +251,11 @@ $api->version(
                 'uses' => 'UserController@findAll',
             ]);
 
+            $api->delete('user/{userID}', [
+                'as' => 'authorization.delete',
+                'uses' => 'UserController@delete',
+            ]);
+
             $api->get('admin', [
                 'as' => 'authorization.admin',
                 'uses' => 'UserController@findAllAdmin',
@@ -430,6 +435,27 @@ $api->version(
         $api->get('view/reg', [
             'as' => 'view.reg',
             'uses' => 'MailViewController@reg',
+        ]);
+
+
+        /**
+         * Password Recovery Route
+         */
+
+        $api->post('password_recovery/send_code', [
+            'as' => 'passwordRecovery.sendCode',
+            'uses' => 'PasswordRecoveryController@sendEmail',
+        ]);
+
+
+        $api->get('password_recovery/verify_code/{code}', [
+            'as' => 'passwordRecovery.verify',
+            'uses' => 'PasswordRecoveryController@verifyCode',
+        ]);
+
+        $api->post('password_recovery/new_password/{code}', [
+            'as' => 'passwordRecovery.setNewPassword',
+            'uses' => 'PasswordRecoveryController@setNewPassword',
         ]);
 
 

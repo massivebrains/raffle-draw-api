@@ -134,6 +134,13 @@ class UserEloquentRepository extends  EloquentRepository implements IUser
         return $res;
     }
 
+    public function updatePassword($userID, $newPassword)
+    {
+        $res = $this->user->where('uuid', $userID)
+            ->update(['password' => $newPassword]);
+        return $res;
+    }
+
 
     public function nameByEmailExist($details)
     {

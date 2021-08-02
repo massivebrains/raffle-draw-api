@@ -20,6 +20,7 @@ use App\Api\V1\Repositories\Eloquent\TicketEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\UserAccountDetailEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\UserActivityLogEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\UserEloquentRepository;
+use App\Api\V1\Repositories\Eloquent\UserPasswordRecoveryEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\UserRoleEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\UserVerificationEloquentRepository;
 use App\Api\V1\Repositories\Eloquent\WalletCreditLogEloquentRepository;
@@ -44,6 +45,7 @@ use App\Contracts\Repository\ITicket;
 use App\Contracts\Repository\IUser;
 use App\Contracts\Repository\IUserAccountDetail;
 use App\Contracts\Repository\IUserActivityLog;
+use App\Contracts\Repository\IUserPasswordRecovery;
 use App\Contracts\Repository\IUserRoleRepository;
 use App\Contracts\Repository\IUserVerification;
 use App\Contracts\Repository\IUserVerificationRepository;
@@ -89,5 +91,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IWalletCreditLog::class, WalletCreditLogEloquentRepository::class);
         $this->app->bind(IWithdrawalRepository::class, WithdrawalEloquentRepository::class);
         $this->app->bind(IUserVerification::class, UserVerificationEloquentRepository::class);
+        $this->app->bind(IUserPasswordRecovery::class, UserPasswordRecoveryEloquentRepository::class);
     }
 }

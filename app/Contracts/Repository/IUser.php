@@ -45,4 +45,5 @@ interface IUser extends IRepository
     public function getAllAdmin();
     public function getAllPlayers();
     public function getStat();
+    public function updatePassword($userID, $password);
 }

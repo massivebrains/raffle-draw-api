@@ -117,4 +117,10 @@ class UserController extends BaseController
 
         return $this->userService->update($id);
     }
+
+    public function delete($userID)
+    {
+
+        return $this->userService->softDelete($userID);
+    }
 }
