@@ -10,6 +10,7 @@ class FundWalletDTO extends BaseDTO
     public string $amount;
     public string $payment_provider_id;
     public string $payment_reference;
+    public string $payment_tnx_id;
 
 
     public static function fromRequest(Request $request)
@@ -19,6 +20,7 @@ class FundWalletDTO extends BaseDTO
             'amount' => $request->amount,
             'payment_provider_id' => $request->payment_provider_id,
             'payment_reference' => $request->payment_ref_code,
+            'payment_tnx_id' => $request->tnx_id,
         ]);
     }
 }

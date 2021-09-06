@@ -30,4 +30,13 @@ class WalletCreditLogEloquentRepository extends  EloquentRepository implements I
 
         return $res;
     }
+
+    public function tnxExist($tnxID, $tnxRef)
+    {
+        $res = $this->walletCreditLog
+            ->where('payment_reference', $tnxRef)
+            ->where('tnx_id', $tnxID)
+            ->first();
+        return $res;
+    }
 }

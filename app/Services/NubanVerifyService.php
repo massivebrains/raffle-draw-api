@@ -24,7 +24,7 @@ class NubanVerifyService extends BaseService implements INubanVerifyService
         try {
 
             $BaseEndPoint = config('services.nuban_verify');
-
+            Log::info($BaseEndPoint);
             $PageResponse = Curl::to($BaseEndPoint)
                 ->withData(array('acc_no' => $accNo, 'bank_code' => $bankCode))
                 ->asJsonResponse()

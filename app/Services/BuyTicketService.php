@@ -14,6 +14,7 @@ use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletDebitLog;
 use App\Contracts\Services\IBuyTicketService;
 use App\Contracts\Services\IEmailService;
+use App\Contracts\Services\ISMSService;
 use App\DTOs\CreateGameSessionDTO;
 use App\DTOs\CreatePaymentDTO;
 use App\DTOs\CreateTicketDTO;
@@ -51,6 +52,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
     private $systemRepo;
     private $drawWinnerRepo;
     private $EmailService;
+    private $smsService;
 
     public function __construct(
         IUser $userRepo,
@@ -64,7 +66,9 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         IPayment $paymentRepo,
         ITicket $ticketRepo,
         ISysSettingsRepository $systemRepo,
-        IDrawWinner $drawWinnerRepo
+        IDrawWinner $drawWinnerRepo,
+        ISMSService $smsService
+
     ) {
         $this->userRepo = $userRepo;
         $this->packageRepo = $packageRepo;
@@ -78,6 +82,8 @@ class BuyTicketService extends BaseService implements IBuyTicketService
         $this->drawWinnerRepo = $drawWinnerRepo;
         $this->EmailService = $EmailService;
         $this->request = $request;
+        $this->smsService = $smsService;
+
 
         $this->user = $this->request->user('api');
     }
@@ -144,8 +150,12 @@ class BuyTicketService extends BaseService implements IBuyTicketService
                 'ticket' =>  $ticket->ticket_short_code,
                 'session_id' => $sessionID
             ];
+
+            $winningTicket = $ticket->ticket_short_code;
+            $winnerUsername = $ticket->user->username;
             $htmlMail = WinningTicketTemplate::getHtml($detail);
             $this->EmailService->sendMail($detail['email'], 'Congratulations! :: Winning Ticket.', $htmlMail);
+            $this->smsService->sendMessage($ticket->user->phone, "Congratulations $winnerUsername!!! Your ticket [$winningTicket] was among the lucky selections from our last draw . You will receive further details on how to claim your prize. Congrats!!!");
         }
     }
 

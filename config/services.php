@@ -35,5 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
     'nuban_verify' => env('NUBAN_VERIFY', null),
+    'flutter_verify' => env('FLUTTER_VERIFY', null),
+    'flutter_secret' => env('FLUTTER_SECRET_LIVE', null),
+    'twilio_acc_sid' => env('TWILIO_ACC_SID', null),
+    'twilio_auth_token' => env('TWILIO_AUTH_TOKEN', null),
 
 ];

@@ -13,4 +13,5 @@ interface IWalletCreditLog
      * @throws RepositoryException
      */
     public function create(FundWalletDTO $attributes);
+    public function tnxExist(string $tnxID, string $tnxRef);
 }

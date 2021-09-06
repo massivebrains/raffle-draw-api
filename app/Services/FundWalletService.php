@@ -6,10 +6,14 @@ use App\Contracts\Repository\IPaymentProviders;
 use App\Contracts\Repository\IWallet;
 use App\Contracts\Repository\IWalletCreditLog;
 use App\Contracts\Services\IFundWalletService;
+use App\Contracts\Services\ISMSService;
 use App\DTOs\FundWalletDTO;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Ixudra\Curl\Facades\Curl;
+
 
 
 class FundWalletService extends BaseService implements IFundWalletService
@@ -70,7 +74,42 @@ class FundWalletService extends BaseService implements IFundWalletService
          * ACTUALLY MADE A PAYMENT BEFORE GIVING VALUE HERE.
          ********************************************************************/
 
-        //  DO THAT HERE
+        try {
+
+            $reqAmount  = $tnxData->amount;
+            $reqTxRefID  = $tnxData->payment_reference;
+            $reqTxID  = $tnxData->payment_tnx_id;
+
+            $BaseEndPoint = config('services.flutter_verify');
+            $fwSecret = config('services.flutter_secret');
+            $PageResponse = Curl::to("$BaseEndPoint/$reqTxID/verify")
+                ->withHeaders(["Authorization: Bearer $fwSecret"])
+                ->returnResponseObject()
+                ->asJsonResponse()
+                ->get();
+
+            $responseData = $PageResponse->content->data;
+
+            if ($PageResponse->status !== 200) {
+                $response_message = $this->customHttpResponse($PageResponse->status, $PageResponse->content->message);
+                return $response_message;
+            }
+
+            //checking for these four(4) important parameters as suggested in the Flutterwave doc. 
+            if (
+                $responseData->status !== "successful" ||
+                $responseData->tx_ref !== $reqTxRefID ||
+                $responseData->currency !== "NGN" ||
+                $responseData->amount < $reqAmount
+            ) {
+                $response_message = $this->customHttpResponse(400, 'Transaction details mismatch.', $PageResponse->content);
+                return $response_message;
+            }
+        } catch (Exception $th) {
+            Log::info($th);
+            $response_message = $this->customHttpResponse(401, 'Error contacting the provider. Check your network connection.');
+            return $response_message;
+        }
 
         /************************************************************
          * CLOSE - ATTENTION !!!!!
@@ -81,7 +120,8 @@ class FundWalletService extends BaseService implements IFundWalletService
 
         /**
          * 1. check supplied payment provider id is valid
-         * 2. Credit wallet and Log Credit
+         * 2. check if value has already been given for the provided tnx credentials
+         * 3. Credit wallet and Log Credit
          */
 
 
@@ -93,9 +133,17 @@ class FundWalletService extends BaseService implements IFundWalletService
             return $response_message;
         }
 
+        //2. check if value has already been given for the provided tnx credentials
+        $valueGiven = $this->walletCreditLogRepo->tnxExist($reqTxID, $reqTxRefID);
+
+        if ($valueGiven) {
+            $response_message = $this->customHttpResponse(400, 'The transaction details supplied has been processed already');
+            return $response_message;
+        }
 
 
-        //2. Credit wallet and Log Credit
+
+        //3. Credit wallet and Log Credit
 
 
         DB::beginTransaction();
@@ -109,6 +157,7 @@ class FundWalletService extends BaseService implements IFundWalletService
             $e = $this->walletRepo->creditWallet($walletID, $tnxData->amount);
 
             $tnxData->wallet_id = $walletInternalID;
+            $tnxData->tnx_id = $tnxData->payment_tnx_id;
             $tnxData->activity_type_id = 12; //where 12 = Fund Wallet (Deposit) activity type.
             $tnxData->payment_provider_id = $paymentProvider->getOriginal('id');
             $data = $this->walletCreditLogRepo->create($tnxData);
