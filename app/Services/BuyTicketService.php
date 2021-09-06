@@ -152,7 +152,7 @@ class BuyTicketService extends BaseService implements IBuyTicketService
             ];
 
             $winningTicket = $ticket->ticket_short_code;
-            $winnerUsername = $ticket->user->username;
+            $winnerUsername = ucfirst($ticket->user->username);
             $htmlMail = WinningTicketTemplate::getHtml($detail);
             $this->EmailService->sendMail($detail['email'], 'Congratulations! :: Winning Ticket.', $htmlMail);
             $this->smsService->sendMessage($ticket->user->phone, "Congratulations $winnerUsername!!! Your ticket [$winningTicket] was among the lucky selections from our last draw . You will receive further details on how to claim your prize. Congrats!!!");
