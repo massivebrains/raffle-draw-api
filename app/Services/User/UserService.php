@@ -186,8 +186,8 @@ class UserService extends BaseService implements IUserService
                 DB::commit();
 
 
-                $response_message = $this->customHttpResponse(200, 'Registration successful.');
-                return $response_message;
+                $data = isset($this->payload['_with_code']) ? ['verification_code' => $code] : [];
+                return $this->customHttpResponse(200, 'Registration successful.', $data);
             } catch (\Throwable $th) {
 
                 DB::rollBack();
